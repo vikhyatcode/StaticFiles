@@ -9,15 +9,15 @@
           "isBlockable": false, 
           "shortDescription": "Status report agent automatically compiles and delivers updates on project progress, tasks, and milestones.",
           "longDescription": "Status report agent automatically compiles and delivers updates on project progress, tasks, and milestones.",
-          "largeImageURL": "<TBA>",
+          "largeImageURL": "https://furkhansai4025080930.blob.core.windows.net/vegaimages/statusagentlogo.png",
           "getTemplatedAppInstanceUrl":
           {
-              "urlTemplate": "<TBA>",
-              "authModel": "tca"
+              "urlTemplate": "https://int.tca.teams.core.microsoft/agents/{templatedInstanceAppId}/manifests",
+              "authModel": "Tca"
           },
           "searchTemplatedAppsUrl": {
                   "urlTemplate": "",
-                  "authModel": "tca"
+                  "authModel": "Tca"
            },
           "webApplicationInfo":
           {
