@@ -12,7 +12,7 @@
           "largeImageURL": "https://furkhansai4025080930.blob.core.windows.net/vegaimages/statusagentlogo.png",
           "getTemplatedAppInstanceUrl":
           {
-              "urlTemplate": "https://int.tca.teams.core.microsoft/agents/{templatedInstanceAppId}/manifests",
+              "urlTemplate": "https://int.tca.teams.core.microsoft/api/v1/agents/{templatedInstanceAppId}/manifests",
               "authModel": "Tca"
           },
           "searchTemplatedAppsUrl": {
