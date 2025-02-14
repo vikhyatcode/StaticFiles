@@ -87,7 +87,52 @@
               {
                   "id": "{$.webApplicationInfo.id}",
                   "resource": "{$.webApplicationInfo.resource}"
-              }
+              },
+            "authorization":
+            {
+                "permissions":
+                {
+                "resourceSpecific":
+                [
+                    {
+                        "name": "TeamsActivity.Send.User",
+                        "type": "Application"
+                    },
+                    {
+                        "name": "OnlineMeetingParticipant.Read.Chat",
+                        "type": "Application"
+                    },
+                    {
+                        "name": "OnlineMeeting.ReadBasic.Chat",
+                        "type": "Application"
+                    },
+                    {
+                        "name": "ChannelMessage.Read.Group",
+                        "type": "Application"
+                    },
+                    {
+                        "name": "ChatMessage.Read.Chat",
+                    "type": "Application"
+                },
+                {
+                    "name": "OnlineMeetingParticipant.Read.Chat",
+                    "type": "Delegated"
+                },
+                {
+                    "name": "OnlineMeetingNotification.Send.Chat",
+                    "type": "Application"
+                },
+                {
+                    "name": "ChannelMeetingTranscript.Read.Group",
+                    "type": "Application"
+                },
+                {
+                    "name": "OnlineMeetingTranscript.Read.Chat",
+                    "type": "Application"
+                }
+            ]
+        }
+    },
           }
       }
     ]
