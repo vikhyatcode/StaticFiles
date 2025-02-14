@@ -1,140 +1,125 @@
 {
     "value": {
-      "templatedAppDefinitions": [
-        {
-          "version": "1.0.0",
-          "id": "5ebb964d-4dd7-4ea6-acd5-a5f310390c5b",
-          "name": "Status Report Agent",
-          "developerName": "Microsoft Corporation",
-          "isBlockable": false, 
-          "shortDescription": "Status report agent automatically compiles and delivers updates on project progress, tasks, and milestones.",
-          "longDescription": "Status report agent automatically compiles and delivers updates on project progress, tasks, and milestones.",
-          "largeImageURL": "https://furkhansai4025080930.blob.core.windows.net/vegaimages/statusagentlogo.png",
-          "getTemplatedAppInstanceUrl":
-          {
-              "urlTemplate": "https://int.tca.teams.core.microsoft/api/v1/agents/{templatedInstanceAppId}/manifests",
-              "authModel": "Tca"
-          },
-          "searchTemplatedAppsUrl": {
-                  "urlTemplate": "",
-                  "authModel": "Tca"
-           },
-          "webApplicationInfo":
-          {
-                "id": "<TBA>",
-                "resource": "<TBA>"
-          },
-          "appInstanceDefinition":
-          {
-              "$schema": "https://developer.microsoft.com/json-schemas/teams/vDevPreview/MicrosoftTeams.schema.json",
-              "manifestVersion": "devPreview",
-              "version": "{$.version}",
-              "id": "{$.id}",
-              "packageName": "com.package.name",
-              "developer":
-              {
-                  "name": "{$.developer.name}",
-                  "websiteUrl": "{$.developer.websiteUrl}",
-                  "privacyUrl": "{$.developer.privacyUrl}",
-                  "termsOfUseUrl": "{$.developer.termsOfUseUrl}",
-                  "mpnId": "{$.developer.mpnId}"
-              },
-              "name":
-              {
-                  "short": "{$.name.short}",
-                  "full": "{$.name.full}"
-              },
-              "description":
-              {
-                  "short": "{$.description.short}",
-                  "full": "{$.description.full}"
-              },
-              "icons":
-              {
-                  "outline": "{$.icons.outline}",
-                  "color": "{$.icons.color}"
-              },
-              "accentColor": "{$.accentColor}",
-              "bots":
-              [
-                  {
-                      "botId": "{$.bots[0].botId}",
-                      "needsChannelSelector": false,
-                      "isNotificationOnly": false,
-                      "scopes":
-                      [
-                          "personal",
-                          "team",
-                          "groupChat"
-                      ],
-                      "supportsFiles": false,
-                      "supportsCalling": false,
-                      "supportsVideo": false
-                  }
-              ],
-              "permissions":
-              [
-                  "identity",
-                  "messageTeamMembers"
-              ],
-              "validDomains":
-              [
-                  "*.botframework.com",
-                  "login.microsoftonline.com",
-                  "*.*.botframework.com"
-              ],
-              "webApplicationInfo":
-              {
-                  "id": "{$.webApplicationInfo.id}",
-                  "resource": "{$.webApplicationInfo.resource}"
-              },
-            "authorization":
+        "templatedAppDefinitions": [
             {
-                "permissions":
-                {
-                "resourceSpecific":
-                [
-                    {
-                        "name": "TeamsActivity.Send.User",
-                        "type": "Application"
-                    },
-                    {
-                        "name": "OnlineMeetingParticipant.Read.Chat",
-                        "type": "Application"
-                    },
-                    {
-                        "name": "OnlineMeeting.ReadBasic.Chat",
-                        "type": "Application"
-                    },
-                    {
-                        "name": "ChannelMessage.Read.Group",
-                        "type": "Application"
-                    },
-                    {
-                        "name": "ChatMessage.Read.Chat",
-                    "type": "Application"
+                "version": "1.0.0",
+                "id": "5ebb964d-4dd7-4ea6-acd5-a5f310390c5b",
+                "name": "Status Report Agent",
+                "developerName": "Microsoft Corporation",
+                "isBlockable": false,
+                "shortDescription": "Status report agent automatically compiles and delivers updates on project progress, tasks, and milestones.",
+                "longDescription": "Status report agent automatically compiles and delivers updates on project progress, tasks, and milestones.",
+                "largeImageURL": "https://furkhansai4025080930.blob.core.windows.net/vegaimages/statusagentlogo.png",
+                "getTemplatedAppInstanceUrl": {
+                    "urlTemplate": "https://int.tca.teams.core.microsoft/api/v1/agents/{templatedInstanceAppId}/manifests",
+                    "authModel": "Tca"
                 },
-                {
-                    "name": "OnlineMeetingParticipant.Read.Chat",
-                    "type": "Delegated"
+                "searchTemplatedAppsUrl": {
+                    "urlTemplate": "",
+                    "authModel": "Tca"
                 },
-                {
-                    "name": "OnlineMeetingNotification.Send.Chat",
-                    "type": "Application"
+                "webApplicationInfo": {
+                    "id": "<TBA>",
+                    "resource": "<TBA>"
                 },
-                {
-                    "name": "ChannelMeetingTranscript.Read.Group",
-                    "type": "Application"
-                },
-                {
-                    "name": "OnlineMeetingTranscript.Read.Chat",
-                    "type": "Application"
+                "appInstanceDefinition": {
+                    "$schema": "https://developer.microsoft.com/json-schemas/teams/vDevPreview/MicrosoftTeams.schema.json",
+                    "manifestVersion": "devPreview",
+                    "version": "{$.version}",
+                    "id": "{$.id}",
+                    "packageName": "com.package.name",
+                    "developer": {
+                        "name": "{$.developer.name}",
+                        "websiteUrl": "{$.developer.websiteUrl}",
+                        "privacyUrl": "{$.developer.privacyUrl}",
+                        "termsOfUseUrl": "{$.developer.termsOfUseUrl}",
+                        "mpnId": "{$.developer.mpnId}"
+                    },
+                    "name": {
+                        "short": "{$.name.short}",
+                        "full": "{$.name.full}"
+                    },
+                    "description": {
+                        "short": "{$.description.short}",
+                        "full": "{$.description.full}"
+                    },
+                    "icons": {
+                        "outline": "{$.icons.outline}",
+                        "color": "{$.icons.color}"
+                    },
+                    "accentColor": "{$.accentColor}",
+                    "bots": [
+                        {
+                            "botId": "{$.bots[0].botId}",
+                            "needsChannelSelector": false,
+                            "isNotificationOnly": false,
+                            "scopes": [
+                                "personal",
+                                "team",
+                                "groupChat"
+                            ],
+                            "supportsFiles": false,
+                            "supportsCalling": false,
+                            "supportsVideo": false
+                        }
+                    ],
+                    "permissions": [
+                        "identity",
+                        "messageTeamMembers"
+                    ],
+                    "validDomains": [
+                        "*.botframework.com",
+                        "login.microsoftonline.com",
+                        "*.*.botframework.com"
+                    ],
+                    "webApplicationInfo": {
+                        "id": "{$.webApplicationInfo.id}",
+                        "resource": "{$.webApplicationInfo.resource}"
+                    },
+                    "authorization": {
+                        "permissions": {
+                            "resourceSpecific": [
+                                {
+                                    "name": "TeamsActivity.Send.User",
+                                    "type": "Application"
+                                },
+                                {
+                                    "name": "OnlineMeetingParticipant.Read.Chat",
+                                    "type": "Application"
+                                },
+                                {
+                                    "name": "OnlineMeeting.ReadBasic.Chat",
+                                    "type": "Application"
+                                },
+                                {
+                                    "name": "ChannelMessage.Read.Group",
+                                    "type": "Application"
+                                },
+                                {
+                                    "name": "ChatMessage.Read.Chat",
+                                    "type": "Application"
+                                },
+                                {
+                                    "name": "OnlineMeetingParticipant.Read.Chat",
+                                    "type": "Delegated"
+                                },
+                                {
+                                    "name": "OnlineMeetingNotification.Send.Chat",
+                                    "type": "Application"
+                                },
+                                {
+                                    "name": "ChannelMeetingTranscript.Read.Group",
+                                    "type": "Application"
+                                },
+                                {
+                                    "name": "OnlineMeetingTranscript.Read.Chat",
+                                    "type": "Application"
+                                }
+                            ]
+                        }
+                    }
                 }
-            ]
-        }
-    },
-          }
-      }
-    ]
-  }
+            }
+        ]
+    }
 }
