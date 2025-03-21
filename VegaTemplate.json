@@ -3,7 +3,7 @@
         "templatedAppDefinitions": [
             {
                 "version": "1.0.0",
-                "id": "5ebb964d-4dd7-4ea6-acd5-a5f310390c5b",
+                "id": "3914e2ec-62b6-4dec-96c1-5710a9c532ef",
                 "name": "Status Report Agent",
                 "developerName": "Microsoft Corporation",
                 "isBlockable": false,
@@ -11,7 +11,7 @@
                 "longDescription": "Status report agent automatically compiles and delivers updates on project progress, tasks, and milestones.",
                 "largeImageURL": "https://furkhansai4025080930.blob.core.windows.net/vegaimages/statusagentlogo.png",
                 "getTemplatedAppInstanceUrl": {
-                    "urlTemplate": "https://int.tca.teams.core.microsoft/api/v1/agents/{templatedInstanceAppId}/manifests",
+                    "urlTemplate": "https://df.tca.teams.core.microsoft/api/v1/agents/{templatedInstanceAppId}/manifests",
                     "authModel": "Tca"
                 },
                 "searchTemplatedAppsUrl": {
@@ -76,48 +76,6 @@
                         "id": "{$.webApplicationInfo.id}",
                         "resource": "{$.webApplicationInfo.resource}"
                     },
-                    "authorization": {
-                        "permissions": {
-                            "resourceSpecific": [
-                                {
-                                    "name": "TeamsActivity.Send.User",
-                                    "type": "Application"
-                                },
-                                {
-                                    "name": "OnlineMeetingParticipant.Read.Chat",
-                                    "type": "Application"
-                                },
-                                {
-                                    "name": "OnlineMeeting.ReadBasic.Chat",
-                                    "type": "Application"
-                                },
-                                {
-                                    "name": "ChannelMessage.Read.Group",
-                                    "type": "Application"
-                                },
-                                {
-                                    "name": "ChatMessage.Read.Chat",
-                                    "type": "Application"
-                                },
-                                {
-                                    "name": "OnlineMeetingParticipant.Read.Chat",
-                                    "type": "Delegated"
-                                },
-                                {
-                                    "name": "OnlineMeetingNotification.Send.Chat",
-                                    "type": "Application"
-                                },
-                                {
-                                    "name": "ChannelMeetingTranscript.Read.Group",
-                                    "type": "Application"
-                                },
-                                {
-                                    "name": "OnlineMeetingTranscript.Read.Chat",
-                                    "type": "Application"
-                                }
-                            ]
-                        }
-                    }
                 }
             }
         ]
