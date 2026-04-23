@@ -7485,6 +7485,584 @@
               "execution": {
                 "taskSupport": "optional"
               }
+            },
+            {
+              "name": "advsec_get_alert_details",
+              "description": "Get detailed information about a specific Advanced Security alert.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "alertId": {
+                    "description": "The ID of the alert to retrieve details for.",
+                    "type": "number",
+                    "minimum": 1
+                  },
+                  "project": {
+                    "description": "The name or ID of the Azure DevOps project.",
+                    "type": "string"
+                  },
+                  "ref": {
+                    "description": "Git reference (branch) to filter the alert.",
+                    "type": "string"
+                  },
+                  "repository": {
+                    "description": "The name or ID of the repository containing the alert.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "project",
+                  "repository",
+                  "alertId"
+                ]
+              },
+              "annotations": {
+                "destructiveHint": false,
+                "openWorldHint": true,
+                "readOnlyHint": true
+              },
+              "execution": {
+                "taskSupport": "optional"
+              }
+            },
+            {
+              "name": "advsec_get_alerts",
+              "description": "Retrieve Advanced Security alerts for a repository.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "alertType": {
+                    "description": "Filter alerts by type. If not specified, returns all alert types.",
+                    "type": "string",
+                    "enum": [
+                      "Unknown",
+                      "Dependency",
+                      "Secret",
+                      "Code",
+                      "License"
+                    ]
+                  },
+                  "confidenceLevels": {
+                    "description": "Filter alerts by confidence levels. Only applicable for secret alerts. Defaults to both 'high' and 'other'.",
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "High",
+                        "Other"
+                      ]
+                    },
+                    "default": [
+                      "high",
+                      "other"
+                    ]
+                  },
+                  "continuationToken": {
+                    "description": "Continuation token for pagination.",
+                    "type": "string"
+                  },
+                  "onlyDefaultBranch": {
+                    "description": "If true, only return alerts found on the default branch. Defaults to true.",
+                    "type": "boolean",
+                    "default": true
+                  },
+                  "orderBy": {
+                    "description": "Order results by specified field. Defaults to 'severity'.",
+                    "type": "string",
+                    "enum": [
+                      "id",
+                      "firstSeen",
+                      "lastSeen",
+                      "fixedOn",
+                      "severity"
+                    ],
+                    "default": "severity"
+                  },
+                  "project": {
+                    "description": "The name or ID of the Azure DevOps project.",
+                    "type": "string"
+                  },
+                  "ref": {
+                    "description": "Filter alerts by git reference (branch). If not provided and onlyDefaultBranch is true, only includes alerts from default branch.",
+                    "type": "string"
+                  },
+                  "repository": {
+                    "description": "The name or ID of the repository to get alerts for.",
+                    "type": "string"
+                  },
+                  "ruleId": {
+                    "description": "Filter alerts by rule ID.",
+                    "type": "string"
+                  },
+                  "ruleName": {
+                    "description": "Filter alerts by rule name.",
+                    "type": "string"
+                  },
+                  "severities": {
+                    "description": "Filter alerts by severity level. If not specified, returns alerts at any severity.",
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "Low",
+                        "Medium",
+                        "High",
+                        "Critical",
+                        "Note",
+                        "Warning",
+                        "Error",
+                        "Undefined"
+                      ]
+                    }
+                  },
+                  "states": {
+                    "description": "Filter alerts by state. If not specified, returns alerts in any state.",
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "Unknown",
+                        "Active",
+                        "Dismissed",
+                        "Fixed",
+                        "AutoDismissed"
+                      ]
+                    }
+                  },
+                  "toolName": {
+                    "description": "Filter alerts by tool name.",
+                    "type": "string"
+                  },
+                  "top": {
+                    "description": "Maximum number of alerts to return. Defaults to 100.",
+                    "type": "number",
+                    "default": 100
+                  },
+                  "validity": {
+                    "description": "Filter alerts by validity status. Only applicable for secret alerts.",
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "None",
+                        "Unknown",
+                        "Active",
+                        "Inactive"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "project",
+                  "repository",
+                  "confidenceLevels"
+                ]
+              },
+              "annotations": {
+                "destructiveHint": false,
+                "openWorldHint": true,
+                "readOnlyHint": true
+              },
+              "execution": {
+                "taskSupport": "optional"
+              }
+            },
+            {
+              "name": "core_get_identity_ids",
+              "description": "Retrieve Azure DevOps identity IDs for a provided search filter.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "searchFilter": {
+                    "description": "Search filter (unique name, display name, email) to retrieve identity IDs for.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "searchFilter"
+                ]
+              },
+              "annotations": {
+                "destructiveHint": false,
+                "openWorldHint": true,
+                "readOnlyHint": true
+              },
+              "execution": {
+                "taskSupport": "optional"
+              }
+            },
+            {
+              "name": "repo_get_pull_request_changes",
+              "description": "Get the file changes (diff) for a pull request iteration with actual code diff content. Returns the code changes including line-by-line diffs made in the pull request.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "repositoryId": {
+                    "description": "The ID of the repository where the pull request is located.",
+                    "type": "string"
+                  },
+                  "pullRequestId": {
+                    "description": "The ID of the pull request to retrieve changes for.",
+                    "type": "number"
+                  },
+                  "project": {
+                    "description": "Project ID or project name (optional)",
+                    "type": "string"
+                  },
+                  "iterationId": {
+                    "description": "The iteration ID to get changes for. If not specified, gets changes for the latest iteration.",
+                    "type": "number"
+                  },
+                  "compareTo": {
+                    "description": "Iteration ID to compare against. If specified, returns changes between two iterations.",
+                    "type": "number"
+                  },
+                  "includeDiffs": {
+                    "description": "Whether to include actual line-by-line diff content. Default is true. Set to false to get only file metadata.",
+                    "type": "boolean"
+                  },
+                  "includeLineContent": {
+                    "description": "Whether to include the actual line content from the changed files. Default is true. When true, fetches file content and includes the actual code lines that were added/removed/modified.",
+                    "type": "boolean"
+                  },
+                  "skip": {
+                    "description": "Number of changes to skip for pagination.",
+                    "type": "number"
+                  },
+                  "top": {
+                    "description": "Maximum number of files to include diffs for. Default is 100.",
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "repositoryId",
+                  "pullRequestId"
+                ]
+              },
+              "annotations": {
+                "destructiveHint": false,
+                "openWorldHint": true,
+                "readOnlyHint": true
+              },
+              "execution": {
+                "taskSupport": "optional"
+              }
+            },
+            {
+              "name": "repo_list_directory",
+              "description": "List files and folders in a directory within a repository. Useful for exploring the structure of a codebase or finding related files.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "repositoryId": {
+                    "description": "The ID or name of the repository.",
+                    "type": "string"
+                  },
+                  "path": {
+                    "description": "The directory path to list (e.g., '/src' or '/src/components'). Defaults to repository root.",
+                    "type": "string",
+                    "default": "/"
+                  },
+                  "project": {
+                    "description": "Project ID or name. Required if repositoryId is a name rather than a GUID.",
+                    "type": "string"
+                  },
+                  "version": {
+                    "description": "The version identifier - branch name (e.g., 'main'), tag name, or commit SHA. Defaults to the repository's default branch.",
+                    "type": "string"
+                  },
+                  "versionType": {
+                    "description": "The type of version identifier: 'Branch', 'Commit', or 'Tag'. Defaults to 'Branch'.",
+                    "type": "string",
+                    "enum": [
+                      "Branch",
+                      "Commit",
+                      "Tag"
+                    ],
+                    "default": "Branch"
+                  },
+                  "recursive": {
+                    "description": "Whether to list items recursively. Defaults to false.",
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "recursionDepth": {
+                    "description": "Maximum depth for recursive listing (1-10). Only applies when recursive is true. Defaults to 1.",
+                    "type": "number",
+                    "minimum": 1,
+                    "default": 1
+                  }
+                },
+                "required": [
+                  "repositoryId"
+                ]
+              },
+              "annotations": {
+                "destructiveHint": false,
+                "openWorldHint": true,
+                "readOnlyHint": true
+              },
+              "execution": {
+                "taskSupport": "optional"
+              }
+            },
+            {
+              "name": "wit_get_work_item_attachment",
+              "description": "Download a work item attachment by its ID and return the content as a base64-encoded resource. Useful for viewing images (e.g. screenshots) attached to work items such as bugs. If a project is not specified, you will be prompted to select one.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "attachmentId": {
+                    "description": "The GUID of the attachment. Found in the attachment URL: https://dev.azure.com/{org}/{project}/_apis/wit/attachments/{attachmentId}",
+                    "type": "string"
+                  },
+                  "fileName": {
+                    "description": "The file name of the attachment, e.g. 'screenshot.png'. Used to determine the MIME type for the returned resource.",
+                    "type": "string"
+                  },
+                  "project": {
+                    "description": "The name or ID of the Azure DevOps project. Reuse from prior context if already known. If not provided, a project selection prompt will be shown.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "attachmentId"
+                ]
+              },
+              "annotations": {
+                "destructiveHint": false,
+                "openWorldHint": true,
+                "readOnlyHint": true
+              },
+              "execution": {
+                "taskSupport": "optional"
+              }
+            },
+            {
+              "name": "wit_query_by_wiql",
+              "description": "Execute a WIQL (Work Item Query Language) query and return the matching work items. If a project is not specified, you will be prompted to select one.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "wiql": {
+                    "description": "The WIQL query string to execute, e.g., \"SELECT [System.Id], [System.Title] FROM WorkItems WHERE [System.TeamProject] = @project\"",
+                    "type": "string",
+                    "maxLength": 32768
+                  },
+                  "project": {
+                    "description": "The name or ID of the Azure DevOps project. Reuse from prior context if already known. If not provided, a project selection prompt will be shown.",
+                    "type": "string"
+                  },
+                  "team": {
+                    "description": "The name or ID of the Azure DevOps team. If not provided, the default team context will be used.",
+                    "type": "string"
+                  },
+                  "timePrecision": {
+                    "description": "Whether to include time precision in date fields. Defaults to false.",
+                    "type": "boolean"
+                  },
+                  "top": {
+                    "description": "The maximum number of results to return. Defaults to 50.",
+                    "type": "number",
+                    "default": 50
+                  }
+                },
+                "required": [
+                  "wiql"
+                ]
+              },
+              "annotations": {
+                "destructiveHint": false,
+                "openWorldHint": true,
+                "readOnlyHint": true
+              },
+              "execution": {
+                "taskSupport": "optional"
+              }
+            },
+            {
+              "name": "wit_update_work_item_comment",
+              "description": "Update an existing comment on a work item by ID. If a project is not specified, you will be prompted to select one.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "workItemId": {
+                    "description": "The ID of the work item.",
+                    "type": "number",
+                    "minimum": 1
+                  },
+                  "commentId": {
+                    "description": "The ID of the comment to update.",
+                    "type": "number",
+                    "minimum": 1
+                  },
+                  "text": {
+                    "description": "The updated comment text.",
+                    "type": "string"
+                  },
+                  "format": {
+                    "description": "The format of the comment text, e.g., 'Markdown', 'Html'. Optional, defaults to 'Markdown'.",
+                    "type": "string",
+                    "enum": [
+                      "Markdown",
+                      "Html"
+                    ],
+                    "default": "Markdown"
+                  },
+                  "project": {
+                    "description": "The name or ID of the Azure DevOps project. Reuse from prior context if already known. If not provided, a project selection prompt will be shown.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "workItemId",
+                  "commentId",
+                  "text"
+                ]
+              },
+              "annotations": {
+                "destructiveHint": false,
+                "openWorldHint": true,
+                "readOnlyHint": false
+              },
+              "execution": {
+                "taskSupport": "optional"
+              }
+            },
+            {
+              "name": "work_get_iteration_capacities",
+              "description": "Get an iteration's capacity for all teams in iteration and project. If a project is not specified, you will be prompted to select one.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "iterationId": {
+                    "description": "The Iteration Id to get capacity for.",
+                    "type": "string"
+                  },
+                  "project": {
+                    "description": "The name or Id of the Azure DevOps project. Reuse from prior context if already known. If not provided, a project selection prompt will be shown.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "iterationId"
+                ]
+              },
+              "annotations": {
+                "destructiveHint": false,
+                "openWorldHint": true,
+                "readOnlyHint": true
+              },
+              "execution": {
+                "taskSupport": "optional"
+              }
+            },
+            {
+              "name": "work_get_team_settings",
+              "description": "Get team settings including default iteration, backlog iteration, and default area path for a team. If a project or team is not specified, you will be prompted to select one.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "project": {
+                    "description": "The name or ID of the Azure DevOps project. Reuse from prior context if already known. If not provided, a project selection prompt will be shown.",
+                    "type": "string"
+                  },
+                  "team": {
+                    "description": "The name or ID of the Azure DevOps team. Reuse from prior context if already known. If not provided, a team selection prompt will be shown.",
+                    "type": "string"
+                  }
+                }
+              },
+              "annotations": {
+                "destructiveHint": false,
+                "openWorldHint": true,
+                "readOnlyHint": true
+              },
+              "execution": {
+                "taskSupport": "optional"
+              }
+            },
+            {
+              "name": "work_update_team_capacity",
+              "description": "Update the team capacity of a team member for a specific iteration in a project.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "project": {
+                    "description": "The name or Id of the Azure DevOps project.",
+                    "type": "string"
+                  },
+                  "team": {
+                    "description": "The name or Id of the Azure DevOps team.",
+                    "type": "string"
+                  },
+                  "teamMemberId": {
+                    "description": "The team member Id for the specific team member.",
+                    "type": "string"
+                  },
+                  "iterationId": {
+                    "description": "The Iteration Id to update the capacity for.",
+                    "type": "string"
+                  },
+                  "activities": {
+                    "description": "Array of activities and their daily capacities for the team member.",
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "description": "The name of the activity (e.g., 'Development').",
+                          "type": "string"
+                        },
+                        "capacityPerDay": {
+                          "description": "The capacity per day for this activity.",
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "capacityPerDay"
+                      ]
+                    }
+                  },
+                  "daysOff": {
+                    "description": "Array of days off for the team member, each with a start and end date in ISO format.",
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "start": {
+                          "description": "Start date of the day off in ISO format.",
+                          "type": "string"
+                        },
+                        "end": {
+                          "description": "End date of the day off in ISO format.",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "start",
+                        "end"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "project",
+                  "team",
+                  "teamMemberId",
+                  "iterationId",
+                  "activities"
+                ]
+              },
+              "annotations": {
+                "destructiveHint": false,
+                "openWorldHint": true,
+                "readOnlyHint": false
+              },
+              "execution": {
+                "taskSupport": "optional"
+              }
             }
           ]
         },
