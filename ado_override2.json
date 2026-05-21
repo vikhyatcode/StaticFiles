@@ -2621,153 +2621,7 @@
           }
         },
         "required": [
-          "action",
-          "orgName"
-        ]
-      },
-      "annotations": {
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "openWorldHint": true
-      },
-      "execution": {
-        "taskSupport": "optional"
-      }
-    },
-    {
-      "name": "testplan_create_test_plan",
-      "description": "Creates a new test plan in the project.",
-      "inputSchema": {
-        "type": "object",
-        "properties": {
-          "project": {
-            "description": "The unique identifier (ID or name) of the Azure DevOps project where the test plan will be created.",
-            "type": "string"
-          },
-          "name": {
-            "description": "The name of the test plan to be created.",
-            "type": "string"
-          },
-          "iteration": {
-            "description": "The iteration path for the test plan.",
-            "type": "string"
-          },
-          "orgName": {
-            "description": "The Azure DevOps organization name. Required",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          },
-          "description": {
-            "description": "The description of the test plan.",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          },
-          "startDate": {
-            "description": "The start date of the test plan.",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          },
-          "endDate": {
-            "description": "The end date of the test plan.",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          },
-          "areaPath": {
-            "description": "The area path for the test plan.",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          }
-        },
-        "required": [
-          "project",
-          "name",
-          "iteration",
-          "orgName"
-        ]
-      },
-      "annotations": {
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "openWorldHint": true
-      },
-      "execution": {
-        "taskSupport": "optional"
-      }
-    },
-    {
-      "name": "testplan_create_test_case",
-      "description": "Creates a new test case work item.",
-      "inputSchema": {
-        "type": "object",
-        "properties": {
-          "project": {
-            "description": "The unique identifier (ID or name) of the Azure DevOps project.",
-            "type": "string"
-          },
-          "title": {
-            "description": "The title of the test case.",
-            "type": "string"
-          },
-          "orgName": {
-            "description": "The Azure DevOps organization name. Required",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          },
-          "steps": {
-            "description": "The steps to reproduce the test case. Make sure to format each step as '1. Step one|Expected result one\\n2. Step two|Expected result two. USE '|' as the delimiter between step and expected result. DO NOT use '|' in the description of the step or expected result.",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          },
-          "priority": {
-            "description": "The priority of the test case.",
-            "default": null
-          },
-          "areaPath": {
-            "description": "The area path for the test case.",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          },
-          "iterationPath": {
-            "description": "The iteration path for the test case.",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          },
-          "testsWorkItemId": {
-            "description": "Optional work item id that will be set as a Microsoft.VSTS.Common.TestedBy-Reverse link to the test case.",
-            "default": null
-          }
-        },
-        "required": [
-          "project",
-          "title",
-          "orgName"
+          "action"
         ]
       },
       "annotations": {
@@ -2810,7 +2664,7 @@
             "default": null
           },
           "etag": {
-            "description": "ETag for editing existing pages (optional, will be fetched if not provided).",
+            "description": "Optional ETag for editing an existing page. Pass the canonical HTTP ETag form, including the surrounding double quotes that are part of the value (e.g., \"7487e77f...\"). The quotes are part of the ETag, not JSON escaping; pass the value verbatim from a previous response's eTag field. If omitted, the current ETag is fetched automatically.",
             "type": [
               "string",
               "null"
@@ -2827,12 +2681,11 @@
           "wikiIdentifier",
           "path",
           "content",
-          "project",
-          "orgName"
+          "project"
         ]
       },
       "annotations": {
-        "readOnlyHint": true,
+        "readOnlyHint": false,
         "destructiveHint": false,
         "openWorldHint": true
       },
@@ -2842,7 +2695,7 @@
     },
     {
       "name": "repo_pull_request_thread",
-      "description": "Read operations on pull request comment threads. Use 'action' to choose: 'list' (list threads on a pull request), 'list_comments' (list comments within a specific thread).",
+      "description": "Read operations on pull request comment threads. Use 'action' to choose: 'list' [requires repositoryId, pullRequestId] — list threads on a pull request; 'list_comments' [requires repositoryId, pullRequestId, threadId] — list comments within a specific thread.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -2859,7 +2712,7 @@
             "default": null
           },
           "repositoryId": {
-            "description": "The ID or name of the repository. When a name is used, the project parameter must also be provided.",
+            "description": "Required for all actions. The ID or name of the repository. When a name is used, the project parameter must also be provided.",
             "type": [
               "string",
               "null"
@@ -2867,11 +2720,11 @@
             "default": null
           },
           "pullRequestId": {
-            "description": "The ID of the pull request.",
+            "description": "Required for all actions. The ID of the pull request.",
             "default": null
           },
           "project": {
-            "description": "Project ID or project name. Required when repositoryId is a repository name.",
+            "description": "Required when repositoryId is a repository name (not a GUID). Project ID or project name.",
             "type": [
               "string",
               "null"
@@ -2928,13 +2781,12 @@
             "default": null
           },
           "threadId": {
-            "description": "For 'list_comments': The ID of the thread to retrieve comments for.",
+            "description": "Required for 'list_comments'. The ID of the thread to retrieve comments for.",
             "default": null
           }
         },
         "required": [
-          "action",
-          "orgName"
+          "action"
         ]
       },
       "annotations": {
@@ -2947,8 +2799,158 @@
       }
     },
     {
+      "name": "testplan_test_plan_write",
+      "description": "Write operations on Azure DevOps test plans. Use 'action' to choose: 'create' (create a new test plan in a project).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "description": "The operation to perform. One of: 'create'.",
+            "type": "string"
+          },
+          "project": {
+            "description": "The unique identifier (ID or name) of the Azure DevOps project. Required.",
+            "type": "string"
+          },
+          "orgName": {
+            "description": "The Azure DevOps organization name. Required.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "name": {
+            "description": "For 'create': The name of the test plan to be created.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "iteration": {
+            "description": "For 'create': The iteration path for the test plan.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "description": {
+            "description": "For 'create': The description of the test plan.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "startDate": {
+            "description": "For 'create': The start date of the test plan.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "endDate": {
+            "description": "For 'create': The end date of the test plan.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "areaPath": {
+            "description": "For 'create': The area path for the test plan.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "action",
+          "project"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "openWorldHint": true
+      },
+      "execution": {
+        "taskSupport": "optional"
+      }
+    },
+    {
+      "name": "testplan_test_suite_write",
+      "description": "Write operations on Azure DevOps test suites. Use 'action' to choose: 'create' (create a new test suite under a parent suite in a test plan), 'add_test_cases' (add existing test cases to a test suite).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "description": "The operation to perform. One of: 'create', 'add_test_cases'.",
+            "type": "string"
+          },
+          "project": {
+            "description": "The unique identifier (ID or name) of the Azure DevOps project.",
+            "type": "string"
+          },
+          "planId": {
+            "description": "The ID of the test plan that contains the suite."
+          },
+          "orgName": {
+            "description": "The Azure DevOps organization name. Required.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "parentSuiteId": {
+            "description": "For 'create': ID of the parent suite under which the new suite will be created. If not given by user this can be the id of the root suite of the test plan.",
+            "default": null
+          },
+          "name": {
+            "description": "For 'create': Name of the child test suite.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "suiteId": {
+            "description": "For 'add_test_cases': The ID of the test suite to add test cases to.",
+            "default": null
+          },
+          "testCaseIds": {
+            "description": "For 'add_test_cases': The ID(s) of the test case(s) to add, as a comma-separated string.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "action",
+          "project",
+          "planId"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "openWorldHint": true
+      },
+      "execution": {
+        "taskSupport": "optional"
+      }
+    },
+    {
       "name": "repo_pull_request",
-      "description": "Read operations on Azure DevOps pull requests. Use 'action' to choose: 'get' (get a PR by ID), 'list' (list PRs in a repository or project with optional filters), 'list_by_commits' (find PRs that contain the given commit IDs), 'get_changes' (get file changes and line-by-line diffs for a PR iteration).",
+      "description": "Read operations on Azure DevOps pull requests. Use 'action' to choose: 'get' [requires repositoryId, pullRequestId, project] — get a PR by ID; 'list' [requires repositoryId OR project] — list PRs with optional filters; 'list_by_commits' [requires project, repository, commits] — find PRs containing the given commits; 'get_changes' [requires repositoryId, pullRequestId] — get file changes and line-by-line diffs for a PR iteration.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -2965,7 +2967,7 @@
             "default": null
           },
           "repositoryId": {
-            "description": "For 'get', 'list', 'get_changes': The ID or name of the repository. When a name is used, the project parameter must also be provided. For 'list_by_commits' use the 'repository' parameter instead.",
+            "description": "Required for 'get' and 'get_changes'; optional for 'list' (used as a filter scope). For 'list_by_commits' use the 'repository' parameter instead. The ID or name of the repository. When a name is used, the project parameter must also be provided.",
             "type": [
               "string",
               "null"
@@ -2973,7 +2975,7 @@
             "default": null
           },
           "repository": {
-            "description": "For 'list_by_commits': The ID or name of the repository.",
+            "description": "Required for 'list_by_commits'. The ID or name of the repository.",
             "type": [
               "string",
               "null"
@@ -2981,7 +2983,7 @@
             "default": null
           },
           "project": {
-            "description": "Project ID or project name. Required for 'get' and 'list_by_commits'. For 'list' it scopes the search; for 'get_changes' required when repositoryId is a repository name; for other actions it is required when repositoryId is a repository name.",
+            "description": "Required for 'get' and 'list_by_commits'. Optional for 'list' (scopes the search). Required for 'get_changes' and other actions when repositoryId is a repository name (not a GUID). Project ID or project name.",
             "type": [
               "string",
               "null"
@@ -2989,7 +2991,7 @@
             "default": null
           },
           "pullRequestId": {
-            "description": "For 'get', 'get_changes': The ID of the pull request to retrieve.",
+            "description": "Required for 'get' and 'get_changes'. The ID of the pull request to retrieve.",
             "default": null
           },
           "includeWorkItemRefs": {
@@ -3091,8 +3093,7 @@
           }
         },
         "required": [
-          "action",
-          "orgName"
+          "action"
         ]
       },
       "annotations": {
@@ -3112,7 +3113,7 @@
         "properties": {}
       },
       "annotations": {
-        "readOnlyHint": true,
+        "readOnlyHint": false,
         "destructiveHint": false,
         "openWorldHint": true
       }
@@ -3151,10 +3152,7 @@
             ],
             "default": null
           }
-        },
-        "required": [
-          "orgName"
-        ]
+        }
       },
       "annotations": {
         "readOnlyHint": true,
@@ -3167,7 +3165,7 @@
     },
     {
       "name": "repo_file",
-      "description": "Read operations against repository tree contents. Use 'action' to choose: 'get_content' (read the text content of a file at a specific branch/tag/commit \u2014 NOTE: may be unavailable in agency mode), 'list_directory' (list files and folders at a path, optionally recursive).",
+      "description": "Read operations against repository tree contents. Use 'action' to choose: 'get_content' (read the text content of a file at a specific branch/tag/commit — NOTE: may be unavailable in agency mode), 'list_directory' (list files and folders at a path, optionally recursive).",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -3208,7 +3206,7 @@
             "default": null
           },
           "version": {
-            "description": "Version identifier \u2014 branch (e.g., 'main'), tag, or commit SHA. Defaults to the repository's default branch.",
+            "description": "Version identifier — branch (e.g., 'main'), tag, or commit SHA. Defaults to the repository's default branch.",
             "type": [
               "string",
               "null"
@@ -3235,8 +3233,7 @@
           }
         },
         "required": [
-          "action",
-          "orgName"
+          "action"
         ]
       },
       "annotations": {
@@ -3400,12 +3397,11 @@
           }
         },
         "required": [
-          "action",
-          "orgName"
+          "action"
         ]
       },
       "annotations": {
-        "readOnlyHint": true,
+        "readOnlyHint": false,
         "destructiveHint": true,
         "openWorldHint": true
       },
@@ -3445,13 +3441,116 @@
           }
         },
         "required": [
-          "project",
-          "orgName"
+          "project"
         ]
       },
       "annotations": {
         "readOnlyHint": true,
         "destructiveHint": false,
+        "openWorldHint": true
+      },
+      "execution": {
+        "taskSupport": "optional"
+      }
+    },
+    {
+      "name": "work_iteration_write",
+      "description": "Write operations on Azure Boards iterations. Use 'action' to choose: 'create' (create new iterations in a project; requires 'iterations'), 'assign' (assign existing iterations to a team; requires 'team' + 'assignments').",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "description": "The operation to perform. One of: 'create', 'assign'.",
+            "type": "string"
+          },
+          "project": {
+            "description": "The name or ID of the Azure DevOps project.",
+            "type": "string"
+          },
+          "orgName": {
+            "description": "The Azure DevOps organization name. Required.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "team": {
+            "description": "For 'assign': the name or ID of the Azure DevOps team.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "iterations": {
+            "description": "For 'create': an array of iterations to create. Each iteration must have a name and can optionally have start and finish dates in ISO format.",
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "properties": {
+                "iterationName": {
+                  "description": "The name of the iteration to create.",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "startDate": {
+                  "description": "The start date of the iteration in ISO format (e.g., '2023-01-01T00:00:00Z'). Optional."
+                },
+                "finishDate": {
+                  "description": "The finish date of the iteration in ISO format (e.g., '2023-01-31T23:59:59Z'). Optional."
+                }
+              }
+            },
+            "default": null
+          },
+          "assignments": {
+            "description": "For 'assign': an array of iterations to assign. Each iteration must have an identifier and a path.",
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "properties": {
+                "identifier": {
+                  "description": "The identifier of the iteration to assign.",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "path": {
+                  "description": "The path of the iteration to assign, e.g., 'Project/Iteration'.",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            },
+            "default": null
+          }
+        },
+        "required": [
+          "action",
+          "project"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
         "openWorldHint": true
       },
       "execution": {
@@ -3539,33 +3638,18 @@
           },
           "minMetricsTimeInUtc": {
             "description": "For 'list': Minimum metrics time to filter build definitions.",
-            "type": [
-              "string",
-              "null"
-            ],
-            "format": "date-time",
             "default": null
           },
           "definitionIds": {
-            "description": "For 'list': Array of build definition IDs to filter.",
+            "description": "For 'list': Array of build definition IDs to filter. Must be a JSON array of integers, e.g. [123, 456].",
             "default": null
           },
           "builtAfter": {
             "description": "For 'list': Return definitions that have builds after this date.",
-            "type": [
-              "string",
-              "null"
-            ],
-            "format": "date-time",
             "default": null
           },
           "notBuiltAfter": {
             "description": "For 'list': Return definitions that do not have builds after this date.",
-            "type": [
-              "string",
-              "null"
-            ],
-            "format": "date-time",
             "default": null
           },
           "includeLatestBuilds": {
@@ -3598,8 +3682,7 @@
           }
         },
         "required": [
-          "action",
-          "orgName"
+          "action"
         ]
       },
       "annotations": {
@@ -3647,49 +3730,7 @@
           }
         },
         "required": [
-          "action",
-          "orgName"
-        ]
-      },
-      "annotations": {
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "openWorldHint": true
-      },
-      "execution": {
-        "taskSupport": "optional"
-      }
-    },
-    {
-      "name": "work_list_iterations",
-      "description": "List all iterations in a specified Azure DevOps project.",
-      "inputSchema": {
-        "type": "object",
-        "properties": {
-          "project": {
-            "description": "The name or ID of the Azure DevOps project.",
-            "type": "string"
-          },
-          "orgName": {
-            "description": "The Azure DevOps organization name. Required",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          },
-          "depth": {
-            "description": "Depth of children to fetch.",
-            "default": 2
-          },
-          "excludedIds": {
-            "description": "An optional array of iteration IDs, and their children, that should not be returned.",
-            "default": null
-          }
-        },
-        "required": [
-          "project",
-          "orgName"
+          "action"
         ]
       },
       "annotations": {
@@ -3762,7 +3803,7 @@
                   ]
                 },
                 "format": {
-                  "description": "The format of the field value. Only to be used for large text fields. e.g., 'Markdown', 'Html'. Optional, defaults to 'Markdown'.",
+                  "description": "The format of the field value. Use 'Markdown' for multiline HTML fields containing markdown content (Description, ReproSteps, AcceptanceCriteria, etc.) so AzDO renders them as markdown. Omit for plain-text fields (Title, Tags) and short single-line fields -- AzDO rejects the markdown hint on those with 'Operation of changing value type is not supported'. When omitted, the value is stored as-is and the field's native rendering applies.",
                   "type": [
                     "string",
                     "null"
@@ -3806,7 +3847,7 @@
                   ]
                 },
                 "format": {
-                  "description": "The format of the field value. Only to be used for large text fields. e.g., 'Markdown', 'Html'. Optional, defaults to 'Markdown'.",
+                  "description": "The format of the field value. Use 'Markdown' for multiline HTML fields containing markdown content (Description, ReproSteps, AcceptanceCriteria, etc.) so AzDO renders them as markdown. Omit for plain-text fields (Title, Tags) and short single-line fields -- AzDO rejects the markdown hint on those with 'Operation of changing value type is not supported'. When omitted, the value is stored as-is and the field's native rendering applies.",
                   "type": [
                     "string",
                     "null"
@@ -3853,7 +3894,7 @@
                   ]
                 },
                 "format": {
-                  "description": "The format of the field value. Only to be used for large text fields. e.g., 'Markdown', 'Html'. Optional, defaults to 'Markdown'.",
+                  "description": "The format of the field value. Use 'Markdown' for multiline HTML fields containing markdown content (Description, ReproSteps, AcceptanceCriteria, etc.) so AzDO renders them as markdown. Omit for plain-text fields (Title, Tags) and short single-line fields -- AzDO rejects the markdown hint on those with 'Operation of changing value type is not supported'. When omitted, the value is stored as-is and the field's native rendering applies.",
                   "type": [
                     "string",
                     "null"
@@ -3908,7 +3949,7 @@
                   ]
                 },
                 "format": {
-                  "description": "The format of the description field value. e.g., 'Markdown', 'Html'. Optional, defaults to 'Markdown'.",
+                  "description": "The format of the description field value. Use 'Markdown' if the description contains markdown content; AzDO will render it as markdown. Omit if the description is plain text or HTML. Default is no format hint, which preserves the field's native rendering.",
                   "type": [
                     "string",
                     "null"
@@ -3932,55 +3973,12 @@
           }
         },
         "required": [
-          "action",
-          "orgName"
+          "action"
         ]
       },
       "annotations": {
-        "readOnlyHint": true,
+        "readOnlyHint": false,
         "destructiveHint": true,
-        "openWorldHint": true
-      },
-      "execution": {
-        "taskSupport": "optional"
-      }
-    },
-    {
-      "name": "work_get_team_capacity",
-      "description": "Get the team capacity of a specific team and iteration in a project.",
-      "inputSchema": {
-        "type": "object",
-        "properties": {
-          "project": {
-            "description": "The name or ID of the Azure DevOps project.",
-            "type": "string"
-          },
-          "team": {
-            "description": "The name or ID of the Azure DevOps team.",
-            "type": "string"
-          },
-          "iterationId": {
-            "description": "The Iteration Id to get capacity for."
-          },
-          "orgName": {
-            "description": "The Azure DevOps organization name. Required",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          }
-        },
-        "required": [
-          "project",
-          "team",
-          "iterationId",
-          "orgName"
-        ]
-      },
-      "annotations": {
-        "readOnlyHint": true,
-        "destructiveHint": false,
         "openWorldHint": true
       },
       "execution": {
@@ -4027,8 +4025,7 @@
           }
         },
         "required": [
-          "searchText",
-          "orgName"
+          "searchText"
         ]
       },
       "annotations": {
@@ -4081,8 +4078,72 @@
         },
         "required": [
           "wiql",
-          "project",
-          "orgName"
+          "project"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "openWorldHint": true
+      },
+      "execution": {
+        "taskSupport": "optional"
+      }
+    },
+    {
+      "name": "work",
+      "description": "Read operations on Azure Boards iterations, team settings, and capacity. Use 'action' to choose: 'list_iterations' (project-wide iteration classification nodes; supports 'depth' and 'excludedIds'), 'list_team_iterations' (iterations assigned to a team; requires 'team'; optional 'timeframe'), 'get_team_settings' (team settings including default iteration, backlog iteration, default area path; requires 'team'), 'get_team_capacity' (capacity for a team in a specific iteration; requires 'team' + 'iterationId'), 'get_iteration_capacities' (capacities across all teams for a specific iteration; requires 'iterationId').",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "description": "The operation to perform. One of: 'list_iterations', 'list_team_iterations', 'get_team_settings', 'get_team_capacity', 'get_iteration_capacities'.",
+            "type": "string"
+          },
+          "project": {
+            "description": "The name or ID of the Azure DevOps project.",
+            "type": "string"
+          },
+          "orgName": {
+            "description": "The Azure DevOps organization name. Required.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "team": {
+            "description": "For 'list_team_iterations', 'get_team_settings', 'get_team_capacity': the name or ID of the Azure DevOps team. Required.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "iterationId": {
+            "description": "For 'get_team_capacity', 'get_iteration_capacities': the iteration ID to look up. Required",
+            "default": null
+          },
+          "timeframe": {
+            "description": "For 'list_team_iterations': the timeframe for which to retrieve iterations. Currently, only 'current' is supported.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "depth": {
+            "description": "For 'list_iterations': depth of children to fetch.",
+            "default": 2
+          },
+          "excludedIds": {
+            "description": "For 'list_iterations': an optional array of iteration IDs, and their children, that should not be returned.",
+            "default": null
+          }
+        },
+        "required": [
+          "action",
+          "project"
         ]
       },
       "annotations": {
@@ -4096,7 +4157,7 @@
     },
     {
       "name": "repo_pull_request_write",
-      "description": "Write operations on Azure DevOps pull requests. Use 'action' to choose: 'create' (create a new pull request), 'update' (update fields on an existing pull request, including autocomplete), 'update_reviewers' (add or remove reviewers), 'vote' (cast a vote as the current user).",
+      "description": "Write operations on Azure DevOps pull requests. Use 'action' to choose: 'create' [requires repositoryId, sourceRefName, targetRefName, title] — create a new pull request; 'update' [requires repositoryId, pullRequestId, project] — update fields on an existing pull request, including autocomplete; 'update_reviewers' [requires repositoryId, pullRequestId, reviewerIds, reviewerAction] — add or remove reviewers; 'vote' [requires repositoryId, pullRequestId, vote] — cast a vote as the current user.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -4113,7 +4174,7 @@
             "default": null
           },
           "repositoryId": {
-            "description": "The ID or name of the repository the pull request belongs to. When a name is used, the project parameter must also be provided.",
+            "description": "Required for all actions. The ID or name of the repository the pull request belongs to. When a name is used, the project parameter must also be provided.",
             "type": [
               "string",
               "null"
@@ -4121,7 +4182,7 @@
             "default": null
           },
           "project": {
-            "description": "Project ID or project name. Required for 'update'; required when repositoryId is a name for all other actions.",
+            "description": "Required for 'update'. Required for all other actions when repositoryId is a repository name (not a GUID). Project ID or project name.",
             "type": [
               "string",
               "null"
@@ -4129,11 +4190,11 @@
             "default": null
           },
           "pullRequestId": {
-            "description": "For 'update', 'update_reviewers', 'vote': The ID of the pull request.",
+            "description": "Required for 'update', 'update_reviewers', 'vote'. The ID of the pull request.",
             "default": null
           },
           "sourceRefName": {
-            "description": "For 'create': The source branch name (e.g., 'refs/heads/feature-branch').",
+            "description": "Required for 'create'. The source branch name (e.g., 'refs/heads/feature-branch').",
             "type": [
               "string",
               "null"
@@ -4141,7 +4202,7 @@
             "default": null
           },
           "targetRefName": {
-            "description": "For 'create', 'update': The target branch name (e.g., 'refs/heads/main').",
+            "description": "Required for 'create'. Optional for 'update' (only when changing target). The target branch name (e.g., 'refs/heads/main').",
             "type": [
               "string",
               "null"
@@ -4149,7 +4210,7 @@
             "default": null
           },
           "title": {
-            "description": "For 'create', 'update': The title of the pull request.",
+            "description": "Required for 'create'. Optional for 'update' (only when changing title). The title of the pull request.",
             "type": [
               "string",
               "null"
@@ -4236,11 +4297,11 @@
             "default": null
           },
           "reviewerIds": {
-            "description": "For 'update_reviewers': List of reviewer IDs or email addresses to add or remove.",
+            "description": "Required for 'update_reviewers'. List of reviewer IDs or email addresses to add or remove.",
             "default": null
           },
           "reviewerAction": {
-            "description": "For 'update_reviewers': 'add' or 'remove' the listed reviewers.",
+            "description": "Required for 'update_reviewers'. 'add' or 'remove' the listed reviewers.",
             "type": [
               "string",
               "null"
@@ -4252,7 +4313,7 @@
             ]
           },
           "vote": {
-            "description": "For 'vote': The vote to cast. Allowed: Approved, ApprovedWithSuggestions, NoVote, WaitingForAuthor, Rejected.",
+            "description": "Required for 'vote'. The vote to cast. Allowed: Approved, ApprovedWithSuggestions, NoVote, WaitingForAuthor, Rejected.",
             "type": [
               "string",
               "null"
@@ -4268,59 +4329,12 @@
           }
         },
         "required": [
-          "action",
-          "orgName"
+          "action"
         ]
       },
       "annotations": {
-        "readOnlyHint": true,
+        "readOnlyHint": false,
         "destructiveHint": true,
-        "openWorldHint": true
-      },
-      "execution": {
-        "taskSupport": "optional"
-      }
-    },
-    {
-      "name": "testplan_create_test_suite",
-      "description": "Creates a new test suite in a test plan.",
-      "inputSchema": {
-        "type": "object",
-        "properties": {
-          "project": {
-            "description": "Project ID or project name.",
-            "type": "string"
-          },
-          "planId": {
-            "description": "ID of the test plan that contains the suites."
-          },
-          "parentSuiteId": {
-            "description": "ID of the parent suite under which the new suite will be created. If not given by user this can be the id of the root suite of the test plan."
-          },
-          "name": {
-            "description": "Name of the child test suite.",
-            "type": "string"
-          },
-          "orgName": {
-            "description": "The Azure DevOps organization name. Required",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          }
-        },
-        "required": [
-          "project",
-          "planId",
-          "parentSuiteId",
-          "name",
-          "orgName"
-        ]
-      },
-      "annotations": {
-        "readOnlyHint": true,
-        "destructiveHint": false,
         "openWorldHint": true
       },
       "execution": {
@@ -4375,20 +4389,10 @@
           },
           "minFinishTime": {
             "description": "For 'list': Minimum finish time to filter builds.",
-            "type": [
-              "string",
-              "null"
-            ],
-            "format": "date-time",
             "default": null
           },
           "maxFinishTime": {
             "description": "For 'list': Maximum finish time to filter builds.",
-            "type": [
-              "string",
-              "null"
-            ],
-            "format": "date-time",
             "default": null
           },
           "requestedFor": {
@@ -4452,7 +4456,7 @@
             "default": null
           },
           "buildIds": {
-            "description": "For 'list': Array of build IDs to retrieve. MUTUALLY EXCLUSIVE with all other filter parameters (definitions, queues, branchName, statusFilter, resultFilter, tagFilters, ...).",
+            "description": "For 'list': Array of build IDs to retrieve. MUTUALLY EXCLUSIVE with all other filter parameters (definitions, queues, branchName, statusFilter, resultFilter, tagFilters, ...). Must be a JSON array of integers, e.g. [123, 456].",
             "default": null
           },
           "repositoryId": {
@@ -4494,8 +4498,7 @@
           }
         },
         "required": [
-          "action",
-          "orgName"
+          "action"
         ]
       },
       "annotations": {
@@ -4551,57 +4554,7 @@
           }
         },
         "required": [
-          "action",
-          "orgName"
-        ]
-      },
-      "annotations": {
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "openWorldHint": true
-      },
-      "execution": {
-        "taskSupport": "optional"
-      }
-    },
-    {
-      "name": "testplan_list_test_plans",
-      "description": "Retrieve a paginated list of test plans from an Azure DevOps project. Allows filtering for active plans and toggling detailed information.",
-      "inputSchema": {
-        "type": "object",
-        "properties": {
-          "project": {
-            "description": "The unique identifier (ID or name) of the Azure DevOps project.",
-            "type": "string"
-          },
-          "orgName": {
-            "description": "The Azure DevOps organization name. Required",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          },
-          "filterActivePlans": {
-            "description": "Filter to include only active test plans. Defaults to true.",
-            "default": true
-          },
-          "includePlanDetails": {
-            "description": "Include detailed information about each test plan.",
-            "default": false
-          },
-          "continuationToken": {
-            "description": "Token to continue fetching test plans from a previous request.",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          }
-        },
-        "required": [
-          "project",
-          "orgName"
+          "action"
         ]
       },
       "annotations": {
@@ -4650,7 +4603,7 @@
           },
           "orgName": {
             "description": "The Azure DevOps organization name. Required",
-            "type": [ 
+            "type": [
               "string",
               "null"
             ],
@@ -4659,8 +4612,7 @@
         },
         "required": [
           "repositoryId",
-          "branchName",
-          "orgName"
+          "branchName"
         ]
       },
       "annotations": {
@@ -4732,8 +4684,71 @@
           }
         },
         "required": [
-          "searchText",
-          "orgName"
+          "searchText"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "openWorldHint": true
+      },
+      "execution": {
+        "taskSupport": "optional"
+      }
+    },
+    {
+      "name": "pipelines_build_log",
+      "description": "Build log access. 'list' enumerates available logs for a build (returns log IDs, sizes, and types); 'get_content' fetches text for a single log by ID, optionally bounded by line range.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "description": "The operation to perform. One of: 'list', 'get_content'.",
+            "type": "string"
+          },
+          "orgName": {
+            "description": "The Azure DevOps organization name. Required",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "project": {
+            "description": "Project ID or name. Required for both actions.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "buildId": {
+            "description": "Numeric build ID (> 0). Get from pipelines_build action=list.",
+            "default": null
+          },
+          "logId": {
+            "description": "For 'get_content': numeric log ID. Get from action=list for the same buildId.",
+            "default": null
+          },
+          "startLine": {
+            "description": "For 'get_content': Inclusive starting line number. Must be <= endLine. Leave both null for the entire log; prefer narrow ranges for very large logs.",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "default": null
+          },
+          "endLine": {
+            "description": "For 'get_content': Inclusive ending line number. Must be >= startLine.",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "action"
         ]
       },
       "annotations": {
@@ -4865,12 +4880,11 @@
           }
         },
         "required": [
-          "action",
-          "orgName"
+          "action"
         ]
       },
       "annotations": {
-        "readOnlyHint": true,
+        "readOnlyHint": false,
         "destructiveHint": true,
         "openWorldHint": true
       },
@@ -4879,73 +4893,8 @@
       }
     },
     {
-      "name": "pipelines_build_log",
-      "description": "Build log access. 'list' enumerates available logs for a build (returns log IDs, sizes, and types); 'get_content' fetches text for a single log by ID, optionally bounded by line range.",
-      "inputSchema": {
-        "type": "object",
-        "properties": {
-          "action": {
-            "description": "The operation to perform. One of: 'list', 'get_content'.",
-            "type": "string"
-          },
-          "orgName": {
-            "description": "The Azure DevOps organization name. Required",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          },
-          "project": {
-            "description": "Project ID or name. Required for both actions.",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          },
-          "buildId": {
-            "description": "Numeric build ID (> 0). Get from pipelines_build action=list.",
-            "default": null
-          },
-          "logId": {
-            "description": "For 'get_content': numeric log ID. Get from action=list for the same buildId.",
-            "default": null
-          },
-          "startLine": {
-            "description": "For 'get_content': Inclusive starting line number. Must be <= endLine. Leave both null for the entire log; prefer narrow ranges for very large logs.",
-            "type": [
-              "integer",
-              "null"
-            ],
-            "default": null
-          },
-          "endLine": {
-            "description": "For 'get_content': Inclusive ending line number. Must be >= startLine.",
-            "type": [
-              "integer",
-              "null"
-            ],
-            "default": null
-          }
-        },
-        "required": [
-          "action",
-          "orgName"
-        ]
-      },
-      "annotations": {
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "openWorldHint": true
-      },
-      "execution": {
-        "taskSupport": "optional"
-      }
-    },
-    {
       "name": "repo_pull_request_thread_write",
-      "description": "Write operations on pull request comment threads. Use 'action' to choose: 'create' (create a new thread with an initial comment), 'reply' (reply to a specific comment on a thread), 'update_status' (update the status of an existing thread).",
+      "description": "Write operations on pull request comment threads. Use 'action' to choose: 'create' [requires repositoryId, pullRequestId, content] — create a new thread with an initial comment; 'reply' [requires repositoryId, pullRequestId, threadId, content] — reply to a comment on an existing thread; 'update_status' [requires repositoryId, pullRequestId, threadId, status] — update the status of an existing thread.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -4962,7 +4911,7 @@
             "default": null
           },
           "repositoryId": {
-            "description": "The ID or name of the repository. When a name is used, the project parameter must also be provided.",
+            "description": "Required for all actions. The ID or name of the repository. When a name is used, the project parameter must also be provided.",
             "type": [
               "string",
               "null"
@@ -4970,11 +4919,11 @@
             "default": null
           },
           "pullRequestId": {
-            "description": "The ID of the pull request.",
+            "description": "Required for all actions. The ID of the pull request.",
             "default": null
           },
           "project": {
-            "description": "Project ID or project name. Required when repositoryId is a repository name.",
+            "description": "Required when repositoryId is a repository name (not a GUID). Project ID or project name.",
             "type": [
               "string",
               "null"
@@ -4982,11 +4931,11 @@
             "default": null
           },
           "threadId": {
-            "description": "For 'reply', 'update_status': The ID of the thread.",
+            "description": "Required for 'reply' and 'update_status'. The ID of the thread.",
             "default": null
           },
           "content": {
-            "description": "For 'create', 'reply': The content of the comment.",
+            "description": "Required for 'create' and 'reply'. The content of the comment.",
             "type": [
               "string",
               "null"
@@ -5002,7 +4951,7 @@
             "default": null
           },
           "status": {
-            "description": "For 'create' (default 'Active') and 'update_status' (required): Thread status.",
+            "description": "Required for 'update_status'. Optional for 'create' (defaults to 'Active'). Thread status.",
             "type": [
               "string",
               "null"
@@ -5036,12 +4985,11 @@
           }
         },
         "required": [
-          "action",
-          "orgName"
+          "action"
         ]
       },
       "annotations": {
-        "readOnlyHint": true,
+        "readOnlyHint": false,
         "destructiveHint": false,
         "openWorldHint": true
       },
@@ -5105,54 +5053,7 @@
           }
         },
         "required": [
-          "action",
-          "orgName"
-        ]
-      },
-      "annotations": {
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "openWorldHint": true
-      },
-      "execution": {
-        "taskSupport": "optional"
-      }
-    },
-    {
-      "name": "work_list_team_iterations",
-      "description": "Retrieve a list of iterations for a specific team in a project.",
-      "inputSchema": {
-        "type": "object",
-        "properties": {
-          "project": {
-            "description": "The name or ID of the Azure DevOps project.",
-            "type": "string"
-          },
-          "team": {
-            "description": "The name or ID of the Azure DevOps team.",
-            "type": "string"
-          },
-          "orgName": {
-            "description": "The Azure DevOps organization name. Required",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          },
-          "timeframe": {
-            "description": "The timeframe for which to retrieve iterations. Currently, only 'current' is supported.",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          }
-        },
-        "required": [
-          "project",
-          "team",
-          "orgName"
+          "action"
         ]
       },
       "annotations": {
@@ -5181,45 +5082,76 @@
       }
     },
     {
-      "name": "work_update_team_capacity",
-      "description": "Update the team capacity of a team member for a specific iteration",
+      "name": "work_capacity_write",
+      "description": "Write operations on Azure Boards team capacity. Use 'action' to choose: 'update' (update a team member's activities and days off for a specific iteration; requires 'team' + 'teamMemberId' + 'iterationId' + 'activities').",
       "inputSchema": {
         "type": "object",
         "properties": {
+          "action": {
+            "description": "The operation to perform. One of: 'update'.",
+            "type": "string"
+          },
           "project": {
             "description": "The name or ID of the Azure DevOps project.",
             "type": "string"
           },
+          "orgName": {
+            "description": "The Azure DevOps organization name. Required.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
           "team": {
-            "description": "The name or ID of the Azure DevOps team.",
-            "type": "string"
+            "description": "For 'update': the name or ID of the Azure DevOps team.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
           },
           "teamMemberId": {
-            "description": "The team member Id for the specific team member.",
-            "type": "string"
+            "description": "For 'update': the team member Id for the specific team member.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
           },
           "iterationId": {
-            "description": "The Iteration Id to update the capacity for."
+            "description": "For 'update': the iteration ID to update the capacity for.",
+            "default": null
           },
           "activities": {
-            "description": "Array of activities and their daily capacities for the team member.",
-            "type": "array",
+            "description": "For 'update': array of activities and their daily capacities for the team member.",
+            "type": [
+              "array",
+              "null"
+            ],
             "items": {
-              "type": "object",
+              "type": [
+                "object",
+                "null"
+              ],
               "properties": {
                 "name": {
                   "description": "The name of the activity (e.g., 'Development').",
-                  "type": "string"
+                  "type": [
+                    "string",
+                    "null"
+                  ]
                 },
                 "capacityPerDay": {
                   "description": "The capacity per day for this activity.",
                   "type": "number"
                 }
               }
-            }
+            },
+            "default": null
           },
           "daysOff": {
-            "description": "Array of days off for the team member, each with a start and end date in ISO format.",
+            "description": "For 'update': array of days off for the team member, each with a start and end date in ISO format.",
             "type": [
               "array",
               "null"
@@ -5231,21 +5163,70 @@
               ],
               "properties": {
                 "start": {
-                  "description": "Start date of the day off in ISO format.",
-                  "type": "string",
-                  "format": "date-time"
+                  "description": "Start date of the day off in ISO format."
                 },
                 "end": {
-                  "description": "End date of the day off in ISO format.",
-                  "type": "string",
-                  "format": "date-time"
+                  "description": "End date of the day off in ISO format."
                 }
               }
             },
             "default": null
+          }
+        },
+        "required": [
+          "action",
+          "project"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "openWorldHint": true
+      },
+      "execution": {
+        "taskSupport": "optional"
+      }
+    },
+    {
+      "name": "testplan",
+      "description": "Read operations on Azure DevOps test plans, suites, and cases. Use 'action' to choose: 'list_plans' (paginated list of test plans in a project; supports filtering for active plans and toggling plan details), 'list_suites' (paginated list of test suites under a test plan; requires 'planId'), 'list_cases' (paginated list of test cases under a test suite; requires 'planId' and 'suiteId').",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "description": "The operation to perform. One of: 'list_plans', 'list_suites', 'list_cases'.",
+            "type": "string"
+          },
+          "project": {
+            "description": "The unique identifier (ID or name) of the Azure DevOps project.",
+            "type": "string"
           },
           "orgName": {
-            "description": "The Azure DevOps organization name. Required",
+            "description": "The Azure DevOps organization name. Required.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "planId": {
+            "description": "For 'list_suites' and 'list_cases': The ID of the test plan. Required.",
+            "default": null
+          },
+          "suiteId": {
+            "description": "For 'list_cases': The ID of the test suite. Required.",
+            "default": null
+          },
+          "filterActivePlans": {
+            "description": "For 'list_plans': Filter to include only active test plans. Defaults to true.",
+            "default": true
+          },
+          "includePlanDetails": {
+            "description": "For 'list_plans': Include detailed information about each test plan.",
+            "default": false
+          },
+          "continuationToken": {
+            "description": "Token to continue fetching results from a previous request.",
             "type": [
               "string",
               "null"
@@ -5254,12 +5235,8 @@
           }
         },
         "required": [
-          "project",
-          "team",
-          "teamMemberId",
-          "iterationId",
-          "activities",
-          "orgName"
+          "action",
+          "project"
         ]
       },
       "annotations": {
@@ -5347,8 +5324,7 @@
           }
         },
         "required": [
-          "action",
-          "orgName"
+          "action"
         ]
       },
       "annotations": {
@@ -5361,17 +5337,17 @@
       }
     },
     {
-      "name": "testplan_update_test_case_steps",
-      "description": "Update an existing test case work item's steps.",
+      "name": "wit_work_item_attachment",
+      "description": "Download a work item attachment by its ID. Returns the attachment as a base64-encoded string along with its file name and MIME type. Useful for viewing images (e.g. screenshots) or other files attached to work items.",
       "inputSchema": {
         "type": "object",
         "properties": {
-          "id": {
-            "description": "The ID of the test case work item to update."
-          },
-          "steps": {
-            "description": "The steps to reproduce the test case. Make sure to format each step as '1. Step one|Expected result one\\n2. Step two|Expected result two. USE '|' as the delimiter between step and expected result. DO NOT use '|' in the description of the step or expected result.",
+          "project": {
+            "description": "The name or ID of the Azure DevOps project.",
             "type": "string"
+          },
+          "attachmentId": {
+            "description": "The GUID of the attachment. Found in the attachment URL."
           },
           "orgName": {
             "description": "The Azure DevOps organization name. Required",
@@ -5380,12 +5356,19 @@
               "null"
             ],
             "default": null
+          },
+          "fileName": {
+            "description": "The file name of the attachment, e.g. 'screenshot.png'. Used to determine the MIME type.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
           }
         },
         "required": [
-          "id",
-          "steps",
-          "orgName"
+          "project",
+          "attachmentId"
         ]
       },
       "annotations": {
@@ -5425,64 +5408,7 @@
         },
         "required": [
           "project",
-          "buildId",
-          "orgName"
-        ]
-      },
-      "annotations": {
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "openWorldHint": true
-      },
-      "execution": {
-        "taskSupport": "optional"
-      }
-    },
-    {
-      "name": "work_assign_iterations",
-      "description": "Assign existing iterations to a specific team in a project.",
-      "inputSchema": {
-        "type": "object",
-        "properties": {
-          "project": {
-            "description": "The name or ID of the Azure DevOps project.",
-            "type": "string"
-          },
-          "team": {
-            "description": "The name or ID of the Azure DevOps team.",
-            "type": "string"
-          },
-          "iterations": {
-            "description": "An array of iterations to assign. Each iteration must have an identifier and a path.",
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "identifier": {
-                  "description": "The identifier of the iteration to assign.",
-                  "type": "string"
-                },
-                "path": {
-                  "description": "The path of the iteration to assign, e.g., 'Project/Iteration'.",
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "orgName": {
-            "description": "The Azure DevOps organization name. Required",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          }
-        },
-        "required": [
-          "project",
-          "team",
-          "iterations",
-          "orgName"
+          "buildId"
         ]
       },
       "annotations": {
@@ -5566,57 +5492,7 @@
           }
         },
         "required": [
-          "action",
-          "orgName"
-        ]
-      },
-      "annotations": {
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "openWorldHint": true
-      },
-      "execution": {
-        "taskSupport": "optional"
-      }
-    },
-    {
-      "name": "testplan_list_test_cases",
-      "description": "Gets a list of test cases in a test suite.",
-      "inputSchema": {
-        "type": "object",
-        "properties": {
-          "project": {
-            "description": "The unique identifier (ID or name) of the Azure DevOps project.",
-            "type": "string"
-          },
-          "planId": {
-            "description": "The ID of the test plan."
-          },
-          "suiteId": {
-            "description": "The ID of the test suite."
-          },
-          "orgName": {
-            "description": "The Azure DevOps organization name. Required",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          },
-          "continuationToken": {
-            "description": "Token to continue fetching test cases from a previous request.",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          }
-        },
-        "required": [
-          "project",
-          "planId",
-          "suiteId",
-          "orgName"
+          "action"
         ]
       },
       "annotations": {
@@ -5651,7 +5527,7 @@
             "default": null
           },
           "ids": {
-            "description": "For 'get_batch': The IDs of the work items to retrieve.",
+            "description": "For 'get_batch': The IDs of the work items to retrieve. Must be a JSON array of integers, e.g. [123, 456].",
             "default": null
           },
           "workItemId": {
@@ -5659,20 +5535,15 @@
             "default": null
           },
           "fields": {
-            "description": "For 'get', 'get_batch': Optional list of fields to include. For 'get', cannot be used together with the expand parameter.",
+            "description": "For 'get', 'get_batch': Optional list of fields to include. For 'get' and 'get_batch', cannot be used together with the expand parameter.",
             "default": null
           },
           "asOf": {
             "description": "For 'get': Optional date string to retrieve the work item as of a specific time.",
-            "type": [
-              "string",
-              "null"
-            ],
-            "format": "date-time",
             "default": null
           },
           "expand": {
-            "description": "For 'get', 'list_revisions': Expand options ('All', 'Fields', 'Links', 'None', 'Relations'). For 'get', cannot be used with fields.",
+            "description": "For 'get', 'get_batch', 'list_revisions': Expand options ('All', 'Fields', 'Links', 'None', 'Relations'). For 'get' and 'get_batch', cannot be used with fields.",
             "default": null
           },
           "top": {
@@ -5729,13 +5600,96 @@
           }
         },
         "required": [
-          "action",
-          "orgName"
+          "action"
         ]
       },
       "annotations": {
         "readOnlyHint": true,
         "destructiveHint": false,
+        "openWorldHint": true
+      },
+      "execution": {
+        "taskSupport": "optional"
+      }
+    },
+    {
+      "name": "testplan_test_case_write",
+      "description": "Write operations on Azure DevOps test cases. Use 'action' to choose: 'create' (create a new test case work item), 'update_steps' (update the steps on an existing test case work item).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "description": "The operation to perform. One of: 'create', 'update_steps'.",
+            "type": "string"
+          },
+          "orgName": {
+            "description": "The Azure DevOps organization name. Required.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "project": {
+            "description": "For 'create': The unique identifier (ID or name) of the Azure DevOps project.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "title": {
+            "description": "For 'create': The title of the test case.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "steps": {
+            "description": "The steps to reproduce the test case. Format each step as '1. Step one|Expected result one\\n2. Step two|Expected result two. USE '|' as the delimiter between step and expected result. DO NOT use '|' in the description of the step or expected result. Required for 'update_steps'; optional for 'create'.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "priority": {
+            "description": "For 'create': The priority of the test case.",
+            "default": null
+          },
+          "areaPath": {
+            "description": "For 'create': The area path for the test case.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "iterationPath": {
+            "description": "For 'create': The iteration path for the test case.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "testsWorkItemId": {
+            "description": "For 'create': Optional work item id that will be set as a Microsoft.VSTS.Common.TestedBy-Reverse link to the test case.",
+            "default": null
+          },
+          "id": {
+            "description": "For 'update_steps': The ID of the test case work item to update.",
+            "default": null
+          }
+        },
+        "required": [
+          "action"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
         "openWorldHint": true
       },
       "execution": {
@@ -5798,59 +5752,12 @@
           }
         },
         "required": [
-          "action",
-          "orgName"
+          "action"
         ]
       },
       "annotations": {
-        "readOnlyHint": true,
+        "readOnlyHint": false,
         "destructiveHint": true,
-        "openWorldHint": true
-      },
-      "execution": {
-        "taskSupport": "optional"
-      }
-    },
-    {
-      "name": "testplan_add_test_cases_to_suite",
-      "description": "Adds existing test cases to a test suite.",
-      "inputSchema": {
-        "type": "object",
-        "properties": {
-          "project": {
-            "description": "The unique identifier (ID or name) of the Azure DevOps project.",
-            "type": "string"
-          },
-          "planId": {
-            "description": "The ID of the test plan."
-          },
-          "suiteId": {
-            "description": "The ID of the test suite."
-          },
-          "testCaseIds": {
-            "description": "The ID(s) of the test case(s) to add, as a comma-separated string.",
-            "type": "string"
-          },
-          "orgName": {
-            "description": "The Azure DevOps organization name. Required",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          }
-        },
-        "required": [
-          "project",
-          "planId",
-          "suiteId",
-          "testCaseIds",
-          "orgName"
-        ]
-      },
-      "annotations": {
-        "readOnlyHint": true,
-        "destructiveHint": false,
         "openWorldHint": true
       },
       "execution": {
@@ -5992,90 +5899,7 @@
         },
         "required": [
           "project",
-          "repository",
-          "orgName"
-        ]
-      },
-      "annotations": {
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "openWorldHint": true
-      },
-      "execution": {
-        "taskSupport": "optional"
-      }
-    },
-    {
-      "name": "testplan_list_test_suites",
-      "description": "Retrieve a paginated list of test suites from an Azure DevOps project and Test Plan Id.",
-      "inputSchema": {
-        "type": "object",
-        "properties": {
-          "project": {
-            "description": "The unique identifier (ID or name) of the Azure DevOps project.",
-            "type": "string"
-          },
-          "planId": {
-            "description": "The ID of the test plan."
-          },
-          "orgName": {
-            "description": "The Azure DevOps organization name. Required",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          },
-          "continuationToken": {
-            "description": "Token to continue fetching test suites from a previous request.",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          }
-        },
-        "required": [
-          "project",
-          "planId",
-          "orgName"
-        ]
-      },
-      "annotations": {
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "openWorldHint": true
-      },
-      "execution": {
-        "taskSupport": "optional"
-      }
-    },
-    {
-      "name": "work_get_iteration_capacities",
-      "description": "Get an iteration's capacity for all teams in iteration and project",
-      "inputSchema": {
-        "type": "object",
-        "properties": {
-          "project": {
-            "description": "The name or ID of the Azure DevOps project.",
-            "type": "string"
-          },
-          "iterationId": {
-            "description": "The Iteration Id to get capacity for."
-          },
-          "orgName": {
-            "description": "The Azure DevOps organization name. Required",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          }
-        },
-        "required": [
-          "project",
-          "iterationId",
-          "orgName"
+          "repository"
         ]
       },
       "annotations": {
@@ -6135,8 +5959,7 @@
           }
         },
         "required": [
-          "searchText",
-          "orgName"
+          "searchText"
         ]
       },
       "annotations": {
@@ -6188,71 +6011,7 @@
           }
         },
         "required": [
-          "action",
-          "orgName"
-        ]
-      },
-      "annotations": {
-        "readOnlyHint": true,
-        "destructiveHint": false,
-        "openWorldHint": true
-      },
-      "execution": {
-        "taskSupport": "optional"
-      }
-    },
-    {
-      "name": "work_create_iterations",
-      "description": "Create new iterations in a specified Azure DevOps project.",
-      "inputSchema": {
-        "type": "object",
-        "properties": {
-          "project": {
-            "description": "The name or ID of the Azure DevOps project.",
-            "type": "string"
-          },
-          "iterations": {
-            "description": "An array of iterations to create. Each iteration must have a name and can optionally have start and finish dates in ISO format.",
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "iterationName": {
-                  "description": "The name of the iteration to create.",
-                  "type": "string"
-                },
-                "startDate": {
-                  "description": "The start date of the iteration in ISO format (e.g., '2023-01-01T00:00:00Z'). Optional.",
-                  "type": [
-                    "string",
-                    "null"
-                  ],
-                  "format": "date-time"
-                },
-                "finishDate": {
-                  "description": "The finish date of the iteration in ISO format (e.g., '2023-01-31T23:59:59Z'). Optional.",
-                  "type": [
-                    "string",
-                    "null"
-                  ],
-                  "format": "date-time"
-                }
-              }
-            }
-          },
-          "orgName": {
-            "description": "The Azure DevOps organization name. Required",
-            "type": [
-              "string",
-              "null"
-            ],
-            "default": null
-          }
-        },
-        "required": [
-          "project",
-          "iterations",
-          "orgName"
+          "action"
         ]
       },
       "annotations": {
