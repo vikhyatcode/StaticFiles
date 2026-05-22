@@ -8219,11 +8219,11 @@
             }
           ]
         },
-        "ca9e26b7-dce5-44a0-b2b7-a70a3d65ce25": {
+        "836ecc9e-6dca-4696-a2e9-15e252cd3f31": {
           "serverUrl": "https://api.githubcopilot.com/mcp",
           "authType": "oAuth2.0",
           "oAuthConfiguration": {
-            "oAuthConfigurationId": "NzJmOTg4YmYtODZmMS00MWFmLTkxYWItMmQ3Y2QwMTFkYjQ3IyNmYWU0M2VjYy1lZjhlLTRlNmQtYWU5Yi02NmExOWY2NDdiNTI="
+            "oAuthConfigurationId": "NzJmOTg4YmYtODZmMS00MWFmLTkxYWItMmQ3Y2QwMTFkYjQ3IyM4M2VjMzU3ZS1jNTVhLTRkNDEtOTQ2ZC1lNTY0Y2NjMGY2YTc="
           },
           "tools": [
             {
