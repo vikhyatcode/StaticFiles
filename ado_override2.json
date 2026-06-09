@@ -114,6 +114,26 @@
                     "4ebb964e-4dd7-2ea6-3cd5-a5f310390c5b"
                 ]
             },
+            "agentSkillsConfig": {
+            "a3869608-b8be-4e8a-b560-67bd4ae30b33": [
+             {
+                 "name": "meeting-shareout",
+                 "description": "Summarizes a detailed Teams meeting recap into a readable message appropriate format. Extracts the high-level summary, key decisions, and assigned action items for sharing.",
+                 "folder": "./skills/meeting-shareout",
+                 "fileUrls": [
+                      "https://res.cdn.office.net/teamsappdata/app-assets/ring0/a3869608-b8be-4e8a-b560-67bd4ae30b33/agentskills/meeting-shareout/skill.md"
+                 ]
+             },
+             {
+                 "name": "follow-up-items",
+                 "description": "Extracts assigned follow-up action items from Teams meeting transcript and meeting chat messages. Posts the task list to the meeting channel with @mentions and follows up with an automated reminder.",
+                 "folder": "./skills/follow-up-items",
+                  "fileUrls": [
+                     "https://res.cdn.office.net/teamsappdata/app-assets/ring0/a3869608-b8be-4e8a-b560-67bd4ae30b33/agentskills/follow-up-items/skill.md"
+                    ]
+             }
+          ]
+      }, 
             "mcpConfig":
             {
                 "145360ce-cf7d-46e3-92b2-d6773fc0a0e4": {
