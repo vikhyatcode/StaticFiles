@@ -102,7 +102,7 @@
           "9009da34-6d9c-4f1a-9c73-1e8372878761"
         ]
       },
-      "agentSkillsConfig": {
+      "agentSkillsConfig": {        
         "a3869608-b8be-4e8a-b560-67bd4ae30b33": [
           {
             "name": "meeting-shareout",
@@ -123,6 +123,254 @@
         ]
       },
       "mcpConfig": {
+        "9175d2f5-9c7d-4d8a-a13b-e33f1b78b93f": {
+          "serverUrl": "https://workiq.svc.cloud.microsoft/mcp",
+          "authType": "oAuth2.0",
+          "oAuthConfiguration": {
+            "oAuthConfigurationId": "NzJmOTg4YmYtODZmMS00MWFmLTkxYWItMmQ3Y2QwMTFkYjQ3IyM2ZWM2MjY5MS00NGI1LTQ1NTYtYmVlMC00MzNkYTgxZDQ3MWM="
+          },
+          "tools": [
+            {
+              "name": "ask",
+              "description": "Ask a question to Microsoft 365 Copilot for information about emails, meetings, files, and other M365 data. Returns the answer text in both content and structured content (under 'answer'), with conversationId in structured content for multi-turn conversations.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "question": {
+                    "type": "string",
+                    "description": "The question to ask."
+                  },
+                  "agentId": {
+                    "type": "string",
+                    "description": "Optional agent ID to target a specific agent. Defaults to bizchat-as-gpt-scenario."
+                  },
+                  "fileUrls": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Optional list of OneDrive or SharePoint file URLs to use as context."
+                  },
+                  "conversationId": {
+                    "type": "string",
+                    "description": "Optional conversation ID to continue an existing conversation."
+                  },
+                  "timeZone": {
+                    "type": "string",
+                    "description": "An IANA time zone identifier matching the user's current UTC offset (from the datetime provided), preferring the most populous zone for that offset (e.g., -04:00 => 'America/New_York', +08:00 => 'Asia/Shanghai'). Do not pass a raw offset or abbreviation. Omit if no offset is available; times will be returned in UTC."
+                  }
+                },
+                "required": [
+                  "question"
+                ]
+              },
+              "annotations": {
+                "title": "ask_question",
+                "readOnlyHint": true
+              }
+            },
+            {
+              "name": "listAgents",
+              "description": "List available Microsoft 365 Copilot agents. Returns agent IDs that can be passed to ask's agentId parameter.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {}
+              },
+              "annotations": {
+                "title": "list agents",
+                "readOnlyHint": true
+              }
+            },
+            {
+              "name": "fetch",
+              "description": "Fetch one or more WorkIQ entities by path. Use entity paths discovered from ask responses or well-known paths like /me/messages. Returns JSON array with results for each path. WorkIQ entity paths borrow from the conventions of M365. Always include a $select query parameter with only the fields you need to reduce response size (e.g., /me/messages?$select=id,subject,from). For collection endpoints, include $top to limit results (e.g., /me/messages?$select=id,subject&$top=10). Some APIs do not support $top (e.g., /me/chats/{id}/members) — omit $top for those. Use the getSchema tool to discover available fields if unsure.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "entityUrls": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of WorkIQ entity paths to fetch (e.g., /me/messages, /me/events/{id}). Paths must be relative — do not include a base URL."
+                  },
+                  "agentId": {
+                    "type": "string",
+                    "description": "Optional agent ID to target a specific agent."
+                  }
+                },
+                "required": [
+                  "entityUrls"
+                ]
+              },
+              "annotations": {
+                "title": "fetch entities",
+                "readOnlyHint": true
+              }
+            },
+            {
+              "name": "create",
+              "description": "Create a new WorkIQ entity by POSTing JSON to a parent collection path. Use getSchema first to discover required fields. Returns the created entity JSON. WorkIQ entity paths borrow from the conventions of M365.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "parentUrl": {
+                    "type": "string",
+                    "description": "WorkIQ parent collection path to POST to (e.g., /me/messages, /me/events). Must be a relative path — do not include a base URL."
+                  },
+                  "jsonBody": {
+                    "type": "object",
+                    "description": "JSON body for the new entity, supplied as a JSON object (e.g., {\"subject\":\"Hi\"}) or a JSON-encoded string"
+                  },
+                  "agentId": {
+                    "type": "string",
+                    "description": "Optional agent ID to target a specific agent."
+                  }
+                },
+                "required": [
+                  "parentUrl",
+                  "jsonBody"
+                ]
+              }
+            },
+            {
+              "name": "update",
+              "description": "Update an existing WorkIQ entity by PATCHing JSON to its path. Use getSchema first to discover updatable fields. Only include fields you want to change. Returns the updated entity JSON. WorkIQ entity paths borrow from the conventions of M365.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "entityUrl": {
+                    "type": "string",
+                    "description": "WorkIQ entity path to update (e.g., /me/messages/{id}, /me/events/{id}). Must be a relative path — do not include a base URL."
+                  },
+                  "jsonBody": {
+                    "type": "object",
+                    "description": "JSON body with fields to update, supplied as a JSON object (e.g., {\"isRead\":true}) or a JSON-encoded string"
+                  },
+                  "headers": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string"
+                    },
+                    "description": "Optional HTTP request headers. If the operation's schema declares an `If-Match` header parameter, you MUST set it to the `@odata.etag` value from the latest read of the same entity."
+                  },
+                  "agentId": {
+                    "type": "string",
+                    "description": "Optional agent ID to target a specific agent."
+                  }
+                },
+                "required": [
+                  "entityUrl",
+                  "jsonBody"
+                ]
+              }
+            },
+            {
+              "name": "delete",
+              "description": "Delete a WorkIQ entity by path. Sends HTTP DELETE to the entity path. Returns confirmation with status code on success. WorkIQ entity paths borrow from the conventions of M365.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "entityUrl": {
+                    "type": "string",
+                    "description": "WorkIQ entity path to delete (e.g., /me/messages/{id}, /me/events/{id}). Must be a relative path — do not include a base URL."
+                  },
+                  "headers": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string"
+                    },
+                    "description": "Optional HTTP request headers. If the operation's schema declares an `If-Match` header parameter, you MUST set it to the `@odata.etag` value from the latest read of the same entity."
+                  },
+                  "agentId": {
+                    "type": "string",
+                    "description": "Optional agent ID to target a specific agent."
+                  }
+                },
+                "required": [
+                  "entityUrl"
+                ]
+              }
+            },
+            {
+              "name": "doAction",
+              "description": "Execute a WorkIQ action via HTTP POST. Actions perform complex operations like sending mail, copying items, or moving resources. Use getSchema first to discover required parameters. WorkIQ entity paths borrow from the conventions of M365.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "actionUrl": {
+                    "type": "string",
+                    "description": "WorkIQ action path to invoke (e.g., /me/sendMail, /me/messages/{id}/copy, /me/drive/items/{id}/copy). Must be a relative path — do not include a base URL."
+                  },
+                  "jsonBody": {
+                    "type": "object",
+                    "description": "OPTIONAL — some actions require a body (e.g., sendMail), others do not (e.g., /move, /copy). When provided, supply as a JSON object (e.g., {\"comment\":\"...\"}) or a JSON-encoded string."
+                  },
+                  "agentId": {
+                    "type": "string",
+                    "description": "Optional agent ID to target a specific agent."
+                  }
+                },
+                "required": [
+                  "actionUrl"
+                ]
+              }
+            },
+            {
+              "name": "callFunction",
+              "description": "Call a WorkIQ function via HTTP GET. Functions compute or synthesize data rather than simply reading entities — e.g., getSchedule, delta, reminderView. Use getSchema to discover function parameters. WorkIQ entity paths borrow from the conventions of M365.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "functionUrl": {
+                    "type": "string",
+                    "description": "WorkIQ function path to call (e.g., /me/calendar/getSchedule, /me/calendarView/delta, /me/reminderView(startDateTime='...',endDateTime='...')). Must be a relative path — do not include a base URL."
+                  },
+                  "agentId": {
+                    "type": "string",
+                    "description": "Optional agent ID to target a specific agent."
+                  }
+                },
+                "required": [
+                  "functionUrl"
+                ]
+              },
+              "annotations": {
+                "title": "call function",
+                "readOnlyHint": true
+              }
+            },
+            {
+              "name": "getSchema",
+              "description": "Get the OpenAPI schema for a WorkIQ operation. Returns a self-contained YAML schema with request/response schemas inlined. Use to discover required fields before calling create or update.",
+              "inputSchema": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "description": "Entity path (e.g., '/me/messages'). Use paths from prior fetch/ask calls."
+                  },
+                  "operationType": {
+                    "type": "string",
+                    "description": "Operation type: 'fetch', 'create', 'update', or 'action'. Required."
+                  },
+                  "format": {
+                    "type": "string",
+                    "description": "Schema output format: 'jsonschema', 'typescript', or 'cddl'. Defaults to 'cddl'."
+                  },
+                  "agentId": {
+                    "type": "string",
+                    "description": "Optional agent ID to target a specific agent."
+                  }
+                }
+              },
+              "annotations": {
+                "title": "call function",
+                "readOnlyHint": true
+              }
+            }
+          ]
+        },
         "145360ce-cf7d-46e3-92b2-d6773fc0a0e4": {
           "serverUrl": "https://www.microsoft.com/releasecommunications/mcp",
           "oAuthConfiguration": {
