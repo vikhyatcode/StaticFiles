@@ -29,6 +29,17 @@
       }
     }
   ],
+   "staticTabs": [
+          {
+            "contentUrl": "https://meetplus.net/dashboard/",
+            "entityId": "index0",
+            "name": "Dashboard",
+            "scopes": [
+              "personal"
+            ],
+            "websiteUrl": "https://meetplus.net/dashboard/"
+          }
+        ],
   "amsSellerAccountId": 10100100,
   "appMetadata": {
     "addInCapabilities": [
