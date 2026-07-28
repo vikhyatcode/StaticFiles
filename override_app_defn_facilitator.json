@@ -1,1 +1,1075 @@
-{}
+{
+  "manifestVersion": "devPreview",
+  "id": "9175d2f5-9c7d-4d8a-a13b-e33f1b78b93f",
+  "version": "2.0.0",
+  "name": "Work IQ MCP",
+  "accentColor": "#E0F6FC",
+  "addendum": {
+    "addendumVersion": "1.0",
+    "billingTierOverride": "consumption",
+    "tags": []
+  },
+  "agentConnectors": [
+    {
+      "description": "The Work IQ MCP Server exposes a set of tools for AI agents, IDEs, and CLIs — read, create, update, and delete M365 entities (mail, calendar, files, chats, and more), search and retrieve OpenAPI entity schemas, list available agents, ask M365 Copilot natural language questions, or route requests to specific declarative agents. This is part of the Work IQ tools, providing shared work intelligence and actions for agents. ",
+      "displayName": "Work IQ MCP",
+      "id": "9175d2f5-9c7d-4d8a-a13b-e33f1b78b93f",
+      "reusable": false,
+      "toolSource": {
+        "remoteMcpServer": {
+          "authorization": {
+            "type": "none"
+          },
+          "mcpServerUrl": "https://workiq.svc.cloud.microsoft/mcp",
+          "mcpToolDescription": {
+            "file": "mcptools.json",
+            "fileContent": "{\n  \"tools\": [\n    {\n      \"name\": \"ask\",\n      \"description\": \"Ask a question to Microsoft 365 Copilot for information about emails, meetings, files, and other M365 data. Returns the answer text in both content and structured content (under 'answer'), with conversationId in structured content for multi-turn conversations.\",\n      \"inputSchema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"question\": {\n            \"type\": \"string\",\n            \"description\": \"The question to ask.\"\n          },\n          \"agentId\": {\n            \"type\": \"string\",\n            \"description\": \"Optional agent ID to target a specific agent. Defaults to bizchat-as-gpt-scenario.\"\n          },\n          \"fileUrls\": {\n            \"type\": \"array\",\n            \"items\": { \"type\": \"string\" },\n            \"description\": \"Optional list of OneDrive or SharePoint file URLs to use as context.\"\n          },\n          \"conversationId\": {\n            \"type\": \"string\",\n            \"description\": \"Optional conversation ID to continue an existing conversation.\"\n          },\n          \"timeZone\": {\n            \"type\": \"string\",\n            \"description\": \"An IANA time zone identifier matching the user's current UTC offset (from the datetime provided), preferring the most populous zone for that offset (e.g., -04:00 => 'America/New_York', +08:00 => 'Asia/Shanghai'). Do not pass a raw offset or abbreviation. Omit if no offset is available; times will be returned in UTC.\"\n          }\n        },\n        \"required\": [ \"question\" ]\n      }\n    },\n    {\n      \"name\": \"listAgents\",\n      \"description\": \"List available Microsoft 365 Copilot agents. Returns agent IDs that can be passed to ask's agentId parameter.\",\n      \"inputSchema\": {\n        \"type\": \"object\",\n        \"properties\": {}\n      }\n    },\n    {\n      \"name\": \"fetch\",\n      \"description\": \"Fetch one or more WorkIQ entities by path. Use entity paths discovered from ask responses or well-known paths like /me/messages. Returns JSON array with results for each path. WorkIQ entity paths borrow from the conventions of M365. Always include a $select query parameter with only the fields you need to reduce response size (e.g., /me/messages?$select=id,subject,from). For collection endpoints, include $top to limit results (e.g., /me/messages?$select=id,subject&$top=10). Some APIs do not support $top (e.g., /me/chats/{id}/members) — omit $top for those. Use the getSchema tool to discover available fields if unsure.\",\n      \"inputSchema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"entityUrls\": {\n            \"type\": \"array\",\n            \"items\": { \"type\": \"string\" },\n            \"description\": \"List of WorkIQ entity paths to fetch (e.g., /me/messages, /me/events/{id}). Paths must be relative — do not include a base URL.\"\n          },\n          \"agentId\": {\n            \"type\": \"string\",\n            \"description\": \"Optional agent ID to target a specific agent.\"\n          }\n        },\n        \"required\": [ \"entityUrls\" ]\n      }\n    },\n    {\n      \"name\": \"create\",\n      \"description\": \"Create a new WorkIQ entity by POSTing JSON to a parent collection path. Use getSchema first to discover required fields. Returns the created entity JSON. WorkIQ entity paths borrow from the conventions of M365.\",\n      \"inputSchema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"parentUrl\": {\n            \"type\": \"string\",\n            \"description\": \"WorkIQ parent collection path to POST to (e.g., /me/messages, /me/events). Must be a relative path — do not include a base URL.\"\n          },\n          \"jsonBody\": {\n            \"type\": \"object\",\n            \"description\": \"JSON body for the new entity, supplied as a JSON object (e.g., {\\\"subject\\\":\\\"Hi\\\"}) or a JSON-encoded string\"\n          },\n          \"agentId\": {\n            \"type\": \"string\",\n            \"description\": \"Optional agent ID to target a specific agent.\"\n          }\n        },\n        \"required\": [ \"parentUrl\", \"jsonBody\" ]\n      }\n    },\n    {\n      \"name\": \"update\",\n      \"description\": \"Update an existing WorkIQ entity by PATCHing JSON to its path. Use getSchema first to discover updatable fields. Only include fields you want to change. Returns the updated entity JSON. WorkIQ entity paths borrow from the conventions of M365.\",\n      \"inputSchema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"entityUrl\": {\n            \"type\": \"string\",\n            \"description\": \"WorkIQ entity path to update (e.g., /me/messages/{id}, /me/events/{id}). Must be a relative path — do not include a base URL.\"\n          },\n          \"jsonBody\": {\n            \"type\": \"object\",\n            \"description\": \"JSON body with fields to update, supplied as a JSON object (e.g., {\\\"isRead\\\":true}) or a JSON-encoded string\"\n          },\n          \"headers\": {\n            \"type\": \"object\",\n            \"additionalProperties\": { \"type\": \"string\" },\n            \"description\": \"Optional HTTP request headers. If the operation's schema declares an `If-Match` header parameter, you MUST set it to the `@odata.etag` value from the latest read of the same entity.\"\n          },\n          \"agentId\": {\n            \"type\": \"string\",\n            \"description\": \"Optional agent ID to target a specific agent.\"\n          }\n        },\n        \"required\": [ \"entityUrl\", \"jsonBody\" ]\n      }\n    },\n    {\n      \"name\": \"delete\",\n      \"description\": \"Delete a WorkIQ entity by path. Sends HTTP DELETE to the entity path. Returns confirmation with status code on success. WorkIQ entity paths borrow from the conventions of M365.\",\n      \"inputSchema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"entityUrl\": {\n            \"type\": \"string\",\n            \"description\": \"WorkIQ entity path to delete (e.g., /me/messages/{id}, /me/events/{id}). Must be a relative path — do not include a base URL.\"\n          },\n          \"headers\": {\n            \"type\": \"object\",\n            \"additionalProperties\": { \"type\": \"string\" },\n            \"description\": \"Optional HTTP request headers. If the operation's schema declares an `If-Match` header parameter, you MUST set it to the `@odata.etag` value from the latest read of the same entity.\"\n          },\n          \"agentId\": {\n            \"type\": \"string\",\n            \"description\": \"Optional agent ID to target a specific agent.\"\n          }\n        },\n        \"required\": [ \"entityUrl\" ]\n      }\n    },\n    {\n      \"name\": \"doAction\",\n      \"description\": \"Execute a WorkIQ action via HTTP POST. Actions perform complex operations like sending mail, copying items, or moving resources. Use getSchema first to discover required parameters. WorkIQ entity paths borrow from the conventions of M365.\",\n      \"inputSchema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"actionUrl\": {\n            \"type\": \"string\",\n            \"description\": \"WorkIQ action path to invoke (e.g., /me/sendMail, /me/messages/{id}/copy, /me/drive/items/{id}/copy). Must be a relative path — do not include a base URL.\"\n          },\n          \"jsonBody\": {\n            \"type\": \"object\",\n            \"description\": \"OPTIONAL — some actions require a body (e.g., sendMail), others do not (e.g., /move, /copy). When provided, supply as a JSON object (e.g., {\\\"comment\\\":\\\"...\\\"}) or a JSON-encoded string.\"\n          },\n          \"agentId\": {\n            \"type\": \"string\",\n            \"description\": \"Optional agent ID to target a specific agent.\"\n          }\n        },\n        \"required\": [ \"actionUrl\" ]\n      }\n    },\n    {\n      \"name\": \"callFunction\",\n      \"description\": \"Call a WorkIQ function via HTTP GET. Functions compute or synthesize data rather than simply reading entities — e.g., getSchedule, delta, reminderView. Use getSchema to discover function parameters. WorkIQ entity paths borrow from the conventions of M365.\",\n      \"inputSchema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"functionUrl\": {\n            \"type\": \"string\",\n            \"description\": \"WorkIQ function path to call (e.g., /me/calendar/getSchedule, /me/calendarView/delta, /me/reminderView(startDateTime='...',endDateTime='...')). Must be a relative path — do not include a base URL.\"\n          },\n          \"agentId\": {\n            \"type\": \"string\",\n            \"description\": \"Optional agent ID to target a specific agent.\"\n          }\n        },\n        \"required\": [ \"functionUrl\" ]\n      }\n    },\n    {\n      \"name\": \"getSchema\",\n      \"description\": \"Get the OpenAPI schema for a WorkIQ operation. Returns a self-contained YAML schema with request/response schemas inlined. Use to discover required fields before calling create or update.\",\n      \"inputSchema\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"path\": {\n            \"type\": \"string\",\n            \"description\": \"Entity path (e.g., '/me/messages'). Use paths from prior fetch/ask calls.\"\n          },\n          \"operationType\": {\n            \"type\": \"string\",\n            \"description\": \"Operation type: 'fetch', 'create', 'update', or 'action'. Required.\"\n          },\n          \"format\": {\n            \"type\": \"string\",\n            \"description\": \"Schema output format: 'jsonschema', 'typescript', or 'cddl'. Defaults to 'cddl'.\"\n          },\n          \"agentId\": {\n            \"type\": \"string\",\n            \"description\": \"Optional agent ID to target a specific agent.\"\n          }\n        }\n      }\n    }\n  ]\n}\n"
+          }
+        }
+      }
+    }
+  ],
+  "amsSellerAccountId": 10100100,
+  "appMetadata": {
+    "addInCapabilities": [
+      "sendReceiveData",
+      "restricted"
+    ],
+    "isCopilotApp": false,
+    "isMetaOSApp": true,
+    "supportedProducts": [
+      {},
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]
+  },
+  "categories": [
+    "Productivity"
+  ],
+  "creatorId": "",
+  "defaultBlockUntilAdminAction": false,
+  "developerName": "Microsoft",
+  "developerUrl": "https://go.microsoft.com/fwlink/?linkid=2138949",
+  "elementRelationshipSet": {
+    "mutualDependencies": [],
+    "oneWayDependencies": []
+  },
+  "industries": [
+    "Other"
+  ],
+  "isAppIOSAcquirable": true,
+  "isBlockable": true,
+  "isCoreApp": false,
+  "isFullScreen": false,
+  "isFullTrust": false,
+  "isMetaOSApp": true,
+  "isPinnable": true,
+  "isPreinstallable": true,
+  "isTeamsOwned": false,
+  "isTenantConfigurable": true,
+  "largeImageUrl": "https://res.cdn.office.net/teamsappdata/ais_prod_v1/evergreen-assets/9175d2f5-9c7d-4d8a-a13b-e33f1b78b93f/2026072817532453/9175d2f5-9c7d-4d8a-a13b-e33f1b78b93f_largeimage.png%22,
+  "lastUpdatedAt": "2026-06-16T00:53:47.045-07:00",
+  "longDescription": "The Work IQ MCP Server exposes a set of tools for AI agents, IDEs, and CLIs — read, create, update, and delete M365 entities (mail, calendar, files, chats, and more), search and retrieve OpenAPI entity schemas, list available agents, ask M365 Copilot natural language questions, or route requests to specific declarative agents. This is part of the Work IQ tools, providing shared work intelligence and actions for agents. ",
+  "metaOSTitleId": "P_7c1b045d-7a9c-275a-b8df-6b54093a48a8",
+  "officeAssetId": "WA200011031",
+  "permissions": [],
+  "privacyUrl": "https://go.microsoft.com/fwlink/?linkid=2138865",
+  "propertiesSourcedFromMetaOS": [
+    "MetaOSTitleId"
+  ],
+  "screenshotUrls": [
+    "https://res.cdn.office.net/teamsappdata/ais_prod_v1/evergreen-assets/9175d2f5-9c7d-4d8a-a13b-e33f1b78b93f/2026072817532453/9175d2f5-9c7d-4d8a-a13b-e33f1b78b93f_screenshot/0.png%22
+  ],
+  "securityComplianceInfo": {
+    "status": "unattested"
+  },
+  "shortDescription": "The Work IQ MCP Server exposes a set of tools for AI agents, IDEs, and CLIs.",
+  "showLoadingIndicator": false,
+  "smallImageUrl": "https://res.cdn.office.net/teamsappdata/ais_prod_v1/evergreen-assets/9175d2f5-9c7d-4d8a-a13b-e33f1b78b93f/2026072817532453/9175d2f5-9c7d-4d8a-a13b-e33f1b78b93f_smallimage.png%22,
+  "systemVersion": "2026072817532453",
+  "termsOfUseUrl": "https://go.microsoft.com/fwlink/?linkid=2138950",
+  "webApplicationInfo": {
+    "id": "fdcc1f02-fc51-4226-8753-f668596af7f7"
+  },
+  "publishingPolicy": {
+    "isFlaggedForViolations": false,
+    "releaseType": "standard",
+    "audienceConfiguration": {
+      "allowedCountryAudience": {
+        "countrySelectionMode": "specificCountries",
+        "specificCountryAudiences": [
+          {
+            "countryCode": "AD",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "AE",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "AF",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "AG",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "AI",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "AL",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "AM",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "AO",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "AQ",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "AR",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "AS",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "AT",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "AU",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "AW",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "AX",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "AZ",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "BA",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "BB",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "BD",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "BE",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "BF",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "BG",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "BH",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "BI",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "BJ",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "BL",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "BM",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "BN",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "BO",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "BQ",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "BR",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "BS",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "BT",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "BV",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "BW",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "BY",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "BZ",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "CA",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "CC",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "CD",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "CF",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "CG",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "CH",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "CI",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "CK",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "CL",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "CM",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "CN",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "CO",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "CR",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "CV",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "CW",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "CX",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "CY",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "CZ",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "DE",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "DJ",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "DK",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "DM",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "DO",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "DZ",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "EC",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "EE",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "EG",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "ER",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "ES",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "ET",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "FI",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "FJ",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "FK",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "FM",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "FO",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "FR",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "GA",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "GB",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "GD",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "GE",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "GF",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "GG",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "GH",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "GI",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "GL",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "GM",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "GN",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "GP",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "GQ",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "GR",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "GS",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "GT",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "GU",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "GW",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "GY",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "HK",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "HM",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "HN",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "HR",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "HT",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "HU",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "ID",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "IE",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "IL",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "IM",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "IN",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "IO",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "IQ",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "IS",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "IT",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "JE",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "JM",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "JO",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "JP",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "KE",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "KG",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "KH",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "KI",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "KM",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "KN",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "KR",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "KW",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "KY",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "KZ",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "LA",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "LB",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "LC",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "LI",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "LK",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "LR",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "LS",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "LT",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "LU",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "LV",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "LY",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "MA",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "MC",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "MD",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "ME",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "MF",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "MG",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "MH",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "MK",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "ML",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "MM",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "MN",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "MO",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "MP",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "MQ",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "MR",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "MS",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "MT",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "MU",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "MV",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "MW",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "MX",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "MY",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "MZ",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "NA",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "NC",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "NE",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "NF",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "NG",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "NI",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "NL",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "NO",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "NP",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "NR",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "NU",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "NZ",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "OM",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "PA",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "PE",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "PF",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "PG",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "PH",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "PK",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "PL",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "PM",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "PN",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "PS",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "PT",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "PW",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "PY",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "QA",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "RE",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "RO",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "RS",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "RU",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "RW",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "SA",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "SB",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "SC",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "SE",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "SG",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "SH",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "SI",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "SJ",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "SK",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "SL",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "SM",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "SN",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "SO",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "SR",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "ST",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "SV",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "SX",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "SZ",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "TC",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "TD",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "TF",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "TG",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "TH",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "TJ",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "TK",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "TL",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "TM",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "TN",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "TO",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "TR",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "TT",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "TV",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "TW",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "TZ",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "UA",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "UG",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "UM",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "US",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "UY",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "UZ",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "VA",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "VC",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "VE",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "VG",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "VI",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "VN",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "VU",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "WF",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "WS",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "YE",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "YT",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "ZA",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "ZM",
+            "stateAudienceSelectionMode": "allStates"
+          },
+          {
+            "countryCode": "ZW",
+            "stateAudienceSelectionMode": "allStates"
+          }
+        ]
+      }
+    }
+  },
+  "localizedDefinitions": []
+}
+ 
+ 
